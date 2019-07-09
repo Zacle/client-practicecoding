@@ -1,0 +1,20 @@
+{
+  "name": "create-next-example-app",
+  "version": "0.1.0",
+  "description": "Client side of practicecoding website",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zacle/client-practicecoding"
+  },
+  "author": "Zacle",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^9.0.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}
