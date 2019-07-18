@@ -72,8 +72,6 @@ export default class extends Component {
                     @import url('https://fonts.googleapis.com/css?family=Roboto');
                     body {
                         font-family: 'Roboto', sans-serif;
-                        background: url(../static/images/auth.jpg) no-repeat center center fixed;
-                        background-color: cover;
                     }
                     .main-section {
                         margin: 0 auto;

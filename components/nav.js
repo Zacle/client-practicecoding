@@ -62,8 +62,8 @@ export default class extends Component {
                   </Link>
                 </NavItem>
                 <NavItem>
-                  <Link prefetch href="/">
-                    <NavLink href="/">
+                  <Link prefetch href="/groups">
+                    <NavLink href="/groups">
                       Groups
                     </NavLink>
                   </Link>

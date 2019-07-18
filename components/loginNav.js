@@ -31,21 +31,21 @@ const Logged = ({user}) => {
                 More
                 </DropdownToggle>
                 <DropdownMenu>
-                <DropdownItem>
-                    <Link>
-                    <a className="text-muted font-weight-bold">Editor</a>
-                    </Link>
-                </DropdownItem>
-                <DropdownItem>
-                    <Link>
-                    <a className="text-muted font-weight-bold">Train</a>
-                    </Link>
-                </DropdownItem>
-                <DropdownItem>
-                    <Link>
-                    <a className="text-muted font-weight-bold">TODO</a>
-                    </Link>
-                </DropdownItem>
+                    <DropdownItem>
+                        <Link>
+                        <a className="text-muted font-weight-bold">Editor</a>
+                        </Link>
+                    </DropdownItem>
+                    <DropdownItem>
+                        <Link>
+                        <a className="text-muted font-weight-bold">Train</a>
+                        </Link>
+                    </DropdownItem>
+                    <DropdownItem>
+                        <Link>
+                        <a className="text-muted font-weight-bold">TODO</a>
+                        </Link>
+                    </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
             <NavItem>
