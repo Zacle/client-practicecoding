@@ -86,14 +86,14 @@ const PastContests = ({contest}) => {
  */
 const MainContests = ({status, contests}) => {
     if (status == "RUNNING") {
-        const map = contests.map((contest) => {
+        const map = contests.map((contest, i) => {
             return (
-                <RunningContests contest={contest} />
+                <RunningContests key={i} contest={contest} />
             );
         });
         return (
             <>
-                <table className="table table-bordered">
+                <table className="table table-bordered table-striped table-responsive-sm">
                     <thead>
                         <tr>
                             <th>Contest Name</th>
@@ -104,19 +104,22 @@ const MainContests = ({status, contests}) => {
                             <th>Standing</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        {map}
+                    </tbody>
                 </table>
             </>
         );
     }
     else if (status == "COMING") {
-        const map = contests.map((contest) => {
+        const map = contests.map((contest, i) => {
             return (
-                <ComingContests contest={contest} />
+                <ComingContests key={i} contest={contest} />
             );
         });
         return (
             <>
-                <table className="table table-bordered">
+                <table className="table table-bordered table-striped table-responsive-sm">
                     <thead>
                         <tr>
                             <th>Contest Name</th>
@@ -126,6 +129,9 @@ const MainContests = ({status, contests}) => {
                             <th>Registration</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        {map}
+                    </tbody>
                 </table>
             </>
         );
@@ -138,7 +144,7 @@ const MainContests = ({status, contests}) => {
         });
         return (
             <>
-                <table className="table table-bordered">
+                <table className="table table-bordered table-striped table-responsive-sm">
                     <thead>
                         <tr>
                             <th>Contest Name</th>
@@ -148,6 +154,9 @@ const MainContests = ({status, contests}) => {
                             <th>Standing</th>
                         </tr>
                     </thead>
+                    <tbody>
+                        {map}
+                    </tbody>
                 </table>
             </>
         );

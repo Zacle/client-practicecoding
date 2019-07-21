@@ -1,27 +1,22 @@
 import React, { Component } from 'react';
-import Link from 'next/link';
-import ContestLayout from '../../components/contest/contestLayout';
-import {
-    Form,
-    FormGroup,
-    Col,
-    Button,
-    Label,
-    Input
-} from 'reactstrap';
-import Option from '../../components/option';
+import { withRouter } from 'next/router';
+import InGroupLayout from '../../../components/group/inGroupLayout';
+import Option from '../../../components/option';
 
-export default class extends Component {
+class CreateGroupContest extends Component {
 
     constructor(props) {
         super(props);
+
+        this.id = props.router.query.id;
     }
 
     render () {
+        const title = "Edit | Practice Coding OJ";
         return (
             <>
                 <br />
-                <ContestLayout title="Create Contest | Practice Coding OJ" description="Create a new contest on Practice Coding OJ" >
+                <InGroupLayout title={title} id={this.id}>
                     <div className="container">
                         <form>
                             <div className="form-group row">
@@ -131,8 +126,10 @@ export default class extends Component {
                             margin-top: 35px;
                         }
                     `}</style>
-                </ContestLayout>
+                </InGroupLayout>
             </>
         );
     }
 }
+
+export default withRouter(CreateGroupContest);

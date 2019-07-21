@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import Layout from './layout';
+import Layout from '../main/layout';
 
 
 const GroupLayout = (props) => {
@@ -12,8 +12,7 @@ const GroupLayout = (props) => {
                 <div className="container">
                     <div className="row justify-content-left ">
                         <div className="col-12 text-left">
-                            <Link prefetch href="/groups"><a href="/groups/create">Create {' '}</a></Link>
-                            <Link prefetch href="/groups"><a href="/groups/my">My Groups{' '}</a></Link>
+                            <Link prefetch href="/groups/create"><a href="/groups/create">Create {' '}</a></Link>
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,7 @@ import {
     Container
 } from 'reactstrap';
 import Link from 'next/link';
-import Head from '../components/head';
+import Head from '../components/main/head';
 import { FacebookLoginButton, GithubLoginButton, LinkedInLoginButton } from "react-social-login-buttons";
 
 /**

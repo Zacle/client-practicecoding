@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
-import ContestLayout from '../../components/contestLayout';
+import ContestLayout from '../../components/contest/contestLayout';
 
 export default class extends Component {
 

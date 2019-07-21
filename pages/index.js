@@ -1,8 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
-import Layout from '../components/layout';
-import MyCaroussel from '../components/caroussel';
-import IndexMenu from '../components/indexMain';
+import Layout from '../components/main/layout';
+import MyCaroussel from '../components/main/caroussel';
+import IndexMenu from '../components/main/indexMain';
 
 const Home = () => (
   <>

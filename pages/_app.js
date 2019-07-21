@@ -3,11 +3,12 @@ import App, { Container } from 'next/app';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faBell, faEnvelope, faKey, faUser,
-    faUserLock, faGlobe
+    faUserLock, faGlobe, faEdit, faTrashAlt, faUserTimes
 } from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
-library.add(fab, faBell, faEnvelope, faKey, faUser, faUserLock, faGlobe);
+library.add(fab, faBell, faEnvelope, faKey, faUser, faUserLock, faGlobe,
+    faEdit, faTrashAlt, faUserTimes);
 
 class MyApp extends App {
 

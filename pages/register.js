@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-    Form,
-    FormGroup,
-    Input,
-    Container
-} from 'reactstrap';
 import Link from 'next/link';
-import Head from '../components/head';
+import Head from '../components/main/head';
 import { FacebookLoginButton, GithubLoginButton, LinkedInLoginButton } from "react-social-login-buttons";
 
 /**
@@ -76,7 +70,7 @@ export default class extends Component {
                                             <div className="input-group-prepend">
                                                 <div className="input-group-text"><FontAwesomeIcon icon="globe" /></div>
                                             </div>
-                                            <select type="password" className="form-control" placeholder="Select Your Country" name="country" >
+                                            <select type="select" className="form-control" name="country" >
                                                 <option value="DRC" >DRC</option>
                                                 <option value="USA" >USA</option>
                                                 <option value="Egypt" >Egypt</option>
