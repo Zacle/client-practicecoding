@@ -14,7 +14,7 @@ export default class extends Component {
                 <br />
                 <GroupLayout title="Create Group | Practice Coding OJ" description="Create a new group on Practice Coding OJ" >
                     <div className="container">
-                        <from>
+                        <form>
                             <div className="form-group row">
                                 <label htmlFor="contestName" className="col-4 col-form-label col-form-label-sm">Name</label>
                                 <div className="col-8 col-md-3">
@@ -36,7 +36,7 @@ export default class extends Component {
                                     <button type="button" className="btn btn-primary col-8 col-md-5">Create</button>
                                 </div>
                             </div>
-                        </from>
+                        </form>
                     </div>
                     <style jsx>{`
                         .container {

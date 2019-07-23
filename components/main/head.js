@@ -2,19 +2,20 @@ import React from 'react';
 import NextHead from 'next/head';
 import { string } from 'prop-types';
 
-const defaultDescription = ''
+const defaultDescription = 'Practice Coding OJ. Programming competitions and contests, programming community'
 const defaultOGURL = ''
 const defaultOGImage = ''
 
 const Head = props => (
   <NextHead>
     <meta charSet="UTF-8" />
-    <title>{props.title || ''}</title>
+    <title>{props.title || 'Practice Coding OJ'}</title>
     <meta
       name="description"
       content={props.description || defaultDescription}
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="programming algorithm contest competition informatics olympiads c++ java graphs" />
     <link rel="icon" sizes="192x192" href="/static/touch-icon.png" />
     <link rel="apple-touch-icon" href="/static/touch-icon.png" />
     <link rel="mask-icon" href="/static/favicon-mask.svg" color="#49B882" />

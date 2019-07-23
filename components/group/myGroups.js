@@ -3,16 +3,16 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-const Member = ({member}) => {
-    let date = new Date(member.joined);
+const Group = ({group}) => {
+    let date = new Date(group.creation);
     return (
         <>
             <tr>
                 <td>
-                    <Link prefetch href="/profile/[username]" as={"/profile/" + member.user.username} ><a href={"/profile/" + member.user.username}>{member.user.username}</a></Link>
+                    <Link prefetch href="groups/[id]" as={"/groups/" + group._id} ><a href={"/groups/" + group._id}>{group.name}</a></Link>
                 </td>
                 <td>
-                    {member.membershipType}
+                    <Link prefetch href="/profile/[username]" as={"/profile/" + group.admin.username} ><a href={"/profile/" + group.admin.username}>{group.admin.username}</a></Link>
                 </td>
                 <td>
                     {date.toLocaleString('en-GB')}
@@ -25,21 +25,21 @@ const Member = ({member}) => {
     );
 }
 
-const Members = ({members=[]}) => {
+const Groups = ({groups=[]}) => {
 
-    if (members.length === 0) {
+    if (groups.length === 0) {
         return (
             <>
                 <div className="row justify-content-center">
-                    No members in this group yet
+                    You have no groups yet.
                 </div>
             </>
         );
     }
 
-    const map = members.map((member, i) => {
+    const map = groups.map((group, i) => {
         return (
-            <Member key={i} member={member} />
+            <Group key={i} group={group} />
         );
     });
 
@@ -48,9 +48,9 @@ const Members = ({members=[]}) => {
             <table className="table table-bordered table-striped table-responsive-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Member</th>
-                        <th>Membership Type</th>
-                        <th>Joined Since</th>
+                        <th>Name</th>
+                        <th>Owner</th>
+                        <th>Creation</th>
                         <th>Option</th>
                     </tr>
                 </thead>
@@ -63,4 +63,4 @@ const Members = ({members=[]}) => {
 }
 
 
-export default Members;
+export default Groups;

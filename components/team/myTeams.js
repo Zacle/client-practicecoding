@@ -3,17 +3,18 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-const Member = ({member}) => {
-    let date = new Date(member.joined);
+const Team = ({team, count}) => {
+    let date = new Date(team.creation);
     return (
         <>
             <tr>
                 <td>
-                    <Link prefetch href="/profile/[username]" as={"/profile/" + member.user.username} ><a href={"/profile/" + member.user.username}>{member.user.username}</a></Link>
+                    <Link prefetch href="teams/[id]" as={"/teams/" + team._id} ><a href={"/teams/" + team._id}>{team.name}</a></Link>
                 </td>
                 <td>
-                    {member.membershipType}
+                    <Link prefetch href="/profile/[username]" as={"/profile/" + team.admin.username} ><a href={"/profile/" + team.admin.username}>{team.admin.username}</a></Link>
                 </td>
+                <td> {count} </td>
                 <td>
                     {date.toLocaleString('en-GB')}
                 </td>
@@ -25,21 +26,21 @@ const Member = ({member}) => {
     );
 }
 
-const Members = ({members=[]}) => {
+const Teams = ({teams=[]}) => {
 
-    if (members.length === 0) {
+    if (teams.length === 0) {
         return (
             <>
                 <div className="row justify-content-center">
-                    No members in this group yet
+                    You have no teams yet.
                 </div>
             </>
         );
     }
 
-    const map = members.map((member, i) => {
+    const map = teams.map((team, i) => {
         return (
-            <Member key={i} member={member} />
+            <Team key={i} count={team.members.length} team={team} />
         );
     });
 
@@ -48,9 +49,10 @@ const Members = ({members=[]}) => {
             <table className="table table-bordered table-striped table-responsive-sm table-hover">
                 <thead>
                     <tr>
-                        <th>Member</th>
-                        <th>Membership Type</th>
-                        <th>Joined Since</th>
+                        <th>Name</th>
+                        <th>Owner</th>
+                        <th>Members count</th>
+                        <th>Creation</th>
                         <th>Option</th>
                     </tr>
                 </thead>
@@ -63,4 +65,4 @@ const Members = ({members=[]}) => {
 }
 
 
-export default Members;
+export default Teams;
