@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/Link';
+import Link from 'next/link';
 
 
 const ComingContests = ({contest}) => {
@@ -8,10 +8,10 @@ const ComingContests = ({contest}) => {
         <>
             <tr>
                 <td>
-                    <Link prefetch href={"contests/" + contest._id} ><a href={"contests/" + contest._id}>{contest.name}</a></Link>
+                    <Link prefetch href="/contest/[id]" as={"/contests/" + contest._id} ><a href={"contests/" + contest._id}>{contest.name}</a></Link>
                 </td>
                 <td>
-                    <Link prefetch href={"profile/" + contest.owner.username} ><a href={"profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
+                    <Link prefetchhref="/profile/[username]" as={"/profile/" + contest.owner.username} ><a href={"profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
                 </td>
                 <td>
                     {date.toLocaleString('en-GB')}
@@ -20,7 +20,7 @@ const ComingContests = ({contest}) => {
                     {contest.duration}
                 </td>
                 <td>
-                    <Link prefetch href={"/contests/register/" + contest._id}><a href={"/contests/register/" + contest._id}>Register</a></Link>
+                    <Link prefetch href="/contests/[id]/register" as={"/contests/" + contest._id + "/register"}><a href={"/contests/" + contest._id + "/register"}>Register</a></Link>
                 </td>
             </tr>
         </>
@@ -33,10 +33,10 @@ const RunningContests = ({contest}) => {
         <>
             <tr>
                 <td>
-                    <Link prefetch href={"contests/" + contest._id} ><a href={"contests/" + contest._id}>{contest.name}</a></Link>
+                    <Link prefetch href="/contest/[id]" as={"/contests/" + contest._id} ><a href={"contests/" + contest._id}>{contest.name}</a></Link>
                 </td>
                 <td>
-                    <Link prefetch href={"profile/" + contest.owner.username} ><a href={"profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
+                    <Link prefetchhref="/profile/[username]" as={"/profile/" + contest.owner.username} ><a href={"profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
                 </td>
                 <td>
                     {date.toLocaleString('en-GB')}
@@ -45,10 +45,10 @@ const RunningContests = ({contest}) => {
                     {contest.duration}
                 </td>
                 <td>
-                    <Link prefetch href={"/contests/register/" + contest._id}><a href={"/contests/register/" + contest._id}>Register</a></Link>
+                    <Link prefetch href="/contests/[id]/register" as={"/contests/" + contest._id + "/register"}><a href={"/contests/" + contest._id + "/register"}>Register</a></Link>
                 </td>
                 <td>
-                    <Link prefetch href={"/contests/standing/" + contest._id}><a href={"/contests/standing/" + contest._id}>Current Standing</a></Link>
+                    <Link prefetch href="/contests/[id]/standing" as={"/contests/" + contest._id + "/standing"}><a href={"/contests/" + contest._id + "/standing"}>Current Standing</a></Link>
                 </td>
             </tr>
         </>
@@ -61,10 +61,10 @@ const PastContests = ({contest}) => {
         <>
             <tr>
                 <td>
-                    <Link prefetch href={"contests/" + contest._id} ><a href={"contests/" + contest._id}>{contest.name}</a></Link>
+                    <Link prefetch href="/contest/[id]" as={"/contests/" + contest._id} ><a href={"contests/" + contest._id}>{contest.name}</a></Link>
                 </td>
                 <td>
-                    <Link prefetch href={"profile/" + contest.owner.username} ><a href={"profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
+                    <Link prefetchhref="/profile/[username]" as={"/profile/" + contest.owner.username} ><a href={"profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
                 </td>
                 <td>
                     {date.toLocaleString('en-GB')}
@@ -73,7 +73,7 @@ const PastContests = ({contest}) => {
                     {contest.duration}
                 </td>
                 <td>
-                    <Link prefetch href={"/contests/standing/" + contest._id}><a href={"/contests/standing/" + contest._id}>Final Standing</a></Link>
+                    <Link prefetch href="/contests/[id]/standing" as={"/contests/" + contest._id + "/standing"}><a href={"/contests/" + contest._id + "/standing"}>Current Standing</a></Link>
                 </td>
             </tr>
         </>
@@ -84,7 +84,16 @@ const PastContests = ({contest}) => {
  * Display contests given the status (coming, running or past)
  * @param {status, contests} param0 
  */
-const MainContests = ({status, contests}) => {
+const MainContests = ({status, contests = []}) => {
+    if (contests.length === 0) {
+        return (
+            <>
+                <div className="row justify-content-center">
+                    No {status.toLowerCase()} contests currently.
+                </div>
+            </>
+        );
+    }
     if (status == "RUNNING") {
         const map = contests.map((contest, i) => {
             return (
@@ -137,9 +146,9 @@ const MainContests = ({status, contests}) => {
         );
     }
     else {
-        const map = contests.map((contest) => {
+        const map = contests.map((contest, i) => {
             return (
-                <PastContests contest={contest} />
+                <PastContests key={i} contest={contest} />
             );
         });
         return (
