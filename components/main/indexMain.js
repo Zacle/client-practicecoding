@@ -9,7 +9,7 @@ const FirstMenu = ()=> {
                 <Card>
                     <CardImg width="100%" src={"../static/images/contest.jpg"} />
                     <CardBody>
-                        <CardText className = "text-center">
+                        <CardText className = "card-text text-center">
                             Make contests
                         </CardText>
                     </CardBody>
@@ -19,7 +19,7 @@ const FirstMenu = ()=> {
                 <Card>
                     <CardImg width="100%" src={"../static/images/groups.jpg"} />
                     <CardBody>
-                        <CardText className = "text-center">
+                        <CardText className = "card-text text-center">
                             Manage groups and group contests
                         </CardText>
                     </CardBody>
@@ -29,7 +29,7 @@ const FirstMenu = ()=> {
                 <Card>
                     <CardImg width="100%" src={"../static/images/discussions.png"} />
                     <CardBody>
-                        <CardText className = "text-center">
+                        <CardText className = "card-text text-center">
                             Engage discussions between members
                         </CardText>
                     </CardBody>

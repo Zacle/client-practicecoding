@@ -12,7 +12,7 @@ const LoginNav = (props) => {
 
     if (props.isLoggedIn) {
         return(
-            <Logged user={props.user} />
+            <Logged deauthenticate={props.deauthenticate} username={props.username} />
         );
     }
     else {
@@ -22,53 +22,45 @@ const LoginNav = (props) => {
     }
 }
 
-const Logged = ({user}) => {
+const Logged = ({username, deauthenticate}) => {
     
     return (
         <>
-            <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-                <DropdownToggle nav caret>
-                More
-                </DropdownToggle>
-                <DropdownMenu>
-                    <DropdownItem>
-                        <Link>
-                        <a className="text-muted font-weight-bold">Editor</a>
-                        </Link>
-                    </DropdownItem>
-                    <DropdownItem>
-                        <Link>
-                        <a className="text-muted font-weight-bold">Train</a>
-                        </Link>
-                    </DropdownItem>
-                    <DropdownItem>
-                        <Link>
-                        <a className="text-muted font-weight-bold">TODO</a>
-                        </Link>
-                    </DropdownItem>
-                </DropdownMenu>
-            </Dropdown>
-            <NavItem>
+            <li className="nav-item dropdown">
+                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    More
+                </a>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <Link prefetch href="/editor">
+                        <a href="/editor" className="dropdown-item">Editor</a>
+                    </Link>
+                    <Link>
+                        <a className="dropdown-item">Train</a>
+                    </Link>
+                    <Link>
+                        <a className="dropdown-item">TODO</a>
+                    </Link>
+                </div>
+            </li>
+            <li className="nav-item">
                 <Link prefetch href="/">
-                    <NavLink href="/">
+                    <a className="nav-link" href="/">
                         <FontAwesomeIcon icon="bell" size="lg"></FontAwesomeIcon>
-                    </NavLink>
+                    </a>
                 </Link>
-            </NavItem>
-            <NavItem>
-                <Link prefetch href="/">
-                    <NavLink href="/">
-                        {user.name}
-                    </NavLink>
+            </li>
+            <li className="nav-item">
+                <Link prefetch href="/profile/[username]" as={`/profile/${username}`}>
+                    <a className="nav-link" href={`/profile/${username}`}>
+                        {username}
+                    </a>
                 </Link>
-            </NavItem>
-            <NavItem>
-                <Link prefetch href="/">
-                    <NavLink href="/">
-                        Log out
-                    </NavLink>
-                </Link>
-            </NavItem>
+            </li>
+            <li onClick={deauthenticate} className="nav-item">
+                <a className="nav-link">
+                    Log out
+                </a>
+            </li>
         </>
     );
 }
@@ -77,20 +69,20 @@ const NotLogged = () => {
     
     return (
         <>
-            <NavItem>
+            <li className="nav-item">
                 <Link prefetch href="/login">
-                    <NavLink href="/login">
+                    <a className="nav-link" href="/login">
                         Login
-                    </NavLink>
+                    </a>
                 </Link>
-            </NavItem>
-            <NavItem>
+            </li>
+            <li className="nav-item">
                 <Link prefetch href="/register">
-                    <NavLink href="/register">
+                    <a className="nav-link" href="/register">
                         Register
-                    </NavLink>
+                    </a>
                 </Link>
-            </NavItem>
+            </li>
         </>
     );
 }

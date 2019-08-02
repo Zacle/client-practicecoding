@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
 import ReactAce from 'react-ace-editor';
 import Layout from '../components/main/layout';
+import init from '../utils/initialize';
+import {connect} from 'react-redux';
 
 
-export default class extends Component {
+class Editor extends Component {
 
     constructor(props, context) {
         super(props, context);
+    }
+
+    static getInitialProps(ctx) {
+        init(ctx);
     }
 
     render() {
@@ -67,3 +73,7 @@ export default class extends Component {
         );
     }
 }
+
+export default connect(
+    state => state
+)(Editor);

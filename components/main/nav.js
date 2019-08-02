@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import { 
-  Navbar,
-  Collapse,
-  NavbarBrand,
-  NavbarToggler,
-  Nav,
-  NavItem,
-  NavLink,
-  Container
- } from "reactstrap";
- import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import LoginNav from "./loginNav";
 
@@ -24,8 +14,7 @@ export default class extends Component {
 
     this.state = {
         isNavOpen: false,
-        dropdownOpen: false,
-        isLoggedIn: false
+        dropdownOpen: false
     };
   }
 
@@ -44,43 +33,45 @@ export default class extends Component {
   render() {
     return (
       <>
-        <Navbar className="navbar navbar-dark bg-dark fixed-top" light expand="md">
-          <Container>
+        <nav className="navbar navbar-expand-md fixed-top navbar-custom">
             <Link prefetch href="/">
-              <NavbarBrand className="mr-auto" href="/">
+              <a className="navbar-brand mr-auto mt-2 mt-lg-0" href="/">
                 Brand Goes Here
-              </NavbarBrand>
+              </a>
             </Link>
-            <NavbarToggler onClick={this.toggleNav} />
-            <Collapse isOpen={this.state.isNavOpen} navbar>
-              <Nav className="ml-auto" navbar>
-                <NavItem>
+            <button className="navbar-dark navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <ul className="navbar-nav ml-auto">
+                <li className="nav-item">
                   <Link prefetch href="/contests/running">
-                    <NavLink href="/contests/running">
+                    <a className="nav-link" href="/contests/running">
                       Contests
-                    </NavLink>
+                    </a>
                   </Link>
-                </NavItem>
-                <NavItem>
+                </li>
+                <li className="nav-item" >
                   <Link prefetch href="/groups">
-                    <NavLink href="/groups">
+                    <a className="nav-link" href="/groups">
                       Groups
-                    </NavLink>
+                    </a>
                   </Link>
-                </NavItem>
-                <NavItem>
+                </li>
+                <li className="nav-item">
                   <Link prefetch href="/">
-                    <NavLink href="/">
+                    <a className="nav-link" href="/">
                       Messages
-                    </NavLink>
+                    </a>
                   </Link>
-                </NavItem>
-                
-                <LoginNav isLoggedIn={this.state.isLoggedIn} user={{name: "zackle"}} />
-              </Nav>
-            </Collapse>
-          </Container>
-        </Navbar>
+                </li>
+                <LoginNav deauthenticate={this.props.deauthenticate} isLoggedIn={this.props.isLoggedIn} username={this.props.username} />
+              </ul>
+            </div>
+        </nav>
+        <style jsx>{`
+            
+        `}</style>
       </>
     );
   }

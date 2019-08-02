@@ -1,25 +1,89 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-    Form,
-    FormGroup,
-    Input,
-    Container
-} from 'reactstrap';
+import { connect } from 'react-redux';
+import { login } from '../redux/actions/authActions';
 import Link from 'next/link';
 import Head from '../components/main/head';
+import { Form, Input, FormFeedback, Alert } from 'reactstrap';
 import { FacebookLoginButton, GithubLoginButton, LinkedInLoginButton } from "react-social-login-buttons";
 
 /**
  * Login Page
  */
-export default class extends Component {
+class Login extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            email: '',
+            password: '',
+            touched: {
+                email: false,
+                password: false
+            },
+            visible: true
+        };
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
+        this.onDismiss = this.onDismiss.bind(this);
+    }
+
+    validate(email) {
+        const errors = {
+            email: ''
+        };
+
+        if (this.state.touched.email) {
+            if (!this.validateEmail(email)) {
+                errors.email = "Invalid email";
+            }
+        }
+        return errors;
+    }
+
+    validateEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    }
+
+    handleBlur = (field) => (evt) => {
+        this.setState({
+          touched: { ...this.state.touched, [field]: true },
+        });
+    }
+
+    async handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+    
+        await this.setState({
+          [name]: value
+        });
+    }
+
+    onDismiss() {
+        this.setState({ visible: false });
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        const user = {
+            email: this.state.email,
+            password: this.state.password
+        }
+        alert("Email: " + user.email + ", Password: " + user.password);
+        this.setState({
+            email: '',
+            password: ''
+        });
     }
 
     render() {
+        const errors = this.validate(this.state.email);
+        let error = errors.email !== '' || (errors.email === '' && this.state.password === '');
         return (
             <>
                 <Head title="Sign in | Practice Coding OJ" description="Sign in to Practcice Coding OJ"/>
@@ -30,13 +94,29 @@ export default class extends Component {
                                 <img src="../static/images/face.png" />
                             </div>
                             <div className="col-12 form-input">
-                                <form>
+                                <Form onSubmit={this.handleSubmit} noValidate>
+                                    {this.props.user.error &&
+                                    (
+                                        <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
+                                            {this.props.user.error}
+                                        </Alert>
+                                    )}
                                     <div className="form-group">
                                         <div className="input-group mb-2">
                                             <div className="input-group-prepend">
                                                 <div className="input-group-text"><FontAwesomeIcon icon="envelope" /></div>
                                             </div>
-                                            <input type="email" className="form-control" placeholder="Enter Email" name="email" />
+                                            <Input type="email" 
+                                                   className="form-control" 
+                                                   placeholder="Enter Email" 
+                                                   name="email"
+                                                   valid={errors.email === ''}
+                                                   invalid={errors.email !== ''}
+                                                   onBlur={this.handleBlur('email')}
+                                                   required
+                                                   value={this.state.email}
+                                                   onChange={this.handleInputChange} />
+                                            <FormFeedback> {errors.email} </FormFeedback>
                                         </div>
                                     </div>
                                     <div className="form-group">
@@ -44,11 +124,18 @@ export default class extends Component {
                                             <div className="input-group-prepend">
                                                 <div className="input-group-text"><FontAwesomeIcon icon="key" /></div>
                                             </div>
-                                            <input type="password" className="form-control" placeholder="Enter Password" name="password" />
+                                            <Input type="password" 
+                                                   className="form-control" 
+                                                   placeholder="Enter Password" 
+                                                   name="password"
+                                                   required
+                                                   value={this.state.password}
+                                                   onChange={this.handleInputChange}/>
                                         </div>
                                     </div>
-                                    <button type="submit" className="btn btn-primary" >Login</button>
-                                </form>
+                                    {error && (<button type="submit" className="btn btn-primary" disabled>Login</button>)}
+                                    {!error && (<button type="submit" className="btn btn-primary">Login</button>)}
+                                </Form>
                             </div>
                             <div className="col-12 forgot">
                                 <Link prefetch href="/forgot" ><a href="/forgot">Forgot Password?</a></Link>
@@ -79,7 +166,7 @@ export default class extends Component {
                         padding: 0;
                     }
                     .modal-content {
-                        background-color: #434e5a;
+                        background-color: #1e2433;
                         opacity: .8;
                         padding: 0 18px;
                         border-radius: 10px;
@@ -127,3 +214,8 @@ export default class extends Component {
         );
     }
 }
+
+export default connect(
+    state => ({user: state.authentication}),
+    { login }
+)(Login);

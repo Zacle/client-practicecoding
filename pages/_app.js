@@ -1,5 +1,8 @@
 import React from 'react';
 import App, { Container } from 'next/app';
+import { Provider } from 'react-redux';
+import withRedux from 'next-redux-wrapper';
+import { Store } from '../redux/store';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faBell, faEnvelope, faKey, faUser,
@@ -27,16 +30,18 @@ class MyApp extends App {
     }
 
     render() {
-        const { Component, pageProps } = this.props;
+        const { Component, pageProps, store } = this.props;
 
         return (
             <>
                 <Container>
-                    <Component {...pageProps} />
+                    <Provider store={store}>
+                        <Component {...pageProps} />
+                    </Provider>
                 </Container>
             </>
         );
     }
 }
 
-export default MyApp;
+export default withRedux(Store)(MyApp);
