@@ -12,7 +12,7 @@ class Editor extends Component {
     }
 
     static getInitialProps(ctx) {
-        init(ctx);
+        init(ctx, true);
     }
 
     render() {

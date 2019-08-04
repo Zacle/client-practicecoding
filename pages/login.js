@@ -27,7 +27,6 @@ class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
-        this.onDismiss = this.onDismiss.bind(this);
     }
 
     validate(email) {
@@ -64,21 +63,13 @@ class Login extends Component {
         });
     }
 
-    onDismiss() {
-        this.setState({ visible: false });
-    }
-
     handleSubmit(e) {
         e.preventDefault();
         const user = {
             email: this.state.email,
             password: this.state.password
         }
-        alert("Email: " + user.email + ", Password: " + user.password);
-        this.setState({
-            email: '',
-            password: ''
-        });
+        this.props.login(user);
     }
 
     render() {
@@ -94,13 +85,14 @@ class Login extends Component {
                                 <img src="../static/images/face.png" />
                             </div>
                             <div className="col-12 form-input">
-                                <Form onSubmit={this.handleSubmit} noValidate>
-                                    {this.props.user.error &&
+                                    {this.props.user.errMsg &&
                                     (
-                                        <Alert color="danger" isOpen={this.state.visible} toggle={this.onDismiss}>
-                                            {this.props.user.error}
+                                        <Alert color="danger">
+                                            {this.props.user.errMsg}
                                         </Alert>
                                     )}
+                                <Form onSubmit={this.handleSubmit} noValidate>
+                                    
                                     <div className="form-group">
                                         <div className="input-group mb-2">
                                             <div className="input-group-prepend">

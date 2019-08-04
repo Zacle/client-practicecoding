@@ -1,18 +1,21 @@
 import React from "react";
 import { NavItem, 
     NavLink,
-    Dropdown,
+    UncontrolledDropdown,
     DropdownItem,
     DropdownToggle,
     DropdownMenu 
 } from "reactstrap";
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
 
 const LoginNav = (props) => {
 
     if (props.isLoggedIn) {
         return(
-            <Logged deauthenticate={props.deauthenticate} username={props.username} />
+            <Logged deauthenticate={props.deauthenticate} username={props.user.username} />
         );
     }
     else {
@@ -26,22 +29,28 @@ const Logged = ({username, deauthenticate}) => {
     
     return (
         <>
-            <li className="nav-item dropdown">
-                <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    More
-                </a>
-                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <Link prefetch href="/editor">
-                        <a href="/editor" className="dropdown-item">Editor</a>
-                    </Link>
-                    <Link>
-                        <a className="dropdown-item">Train</a>
-                    </Link>
-                    <Link>
-                        <a className="dropdown-item">TODO</a>
-                    </Link>
-                </div>
-            </li>
+            <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  More
+                </DropdownToggle>
+                <DropdownMenu>
+                    <DropdownItem className="dropdown-item">
+                        <Link prefetch href="/editor">
+                            <a className="dropdown-item" href="/editor">Editor</a>
+                        </Link>
+                    </DropdownItem>
+                    <DropdownItem className="dropdown-item">
+                        <Link href="/">
+                            <a className="dropdown-item">Train</a>
+                        </Link>
+                    </DropdownItem>
+                    <DropdownItem className="dropdown-item">
+                        <Link href="/">
+                            <a className="dropdown-item">TODO</a>
+                        </Link>
+                    </DropdownItem>
+                </DropdownMenu>
+            </UncontrolledDropdown>
             <li className="nav-item">
                 <Link prefetch href="/">
                     <a className="nav-link" href="/">
@@ -57,9 +66,11 @@ const Logged = ({username, deauthenticate}) => {
                 </Link>
             </li>
             <li onClick={deauthenticate} className="nav-item">
-                <a className="nav-link">
-                    Log out
-                </a>
+                <Link href="/">
+                    <a className="nav-link">
+                        Log out
+                    </a>
+                </Link>
             </li>
         </>
     );

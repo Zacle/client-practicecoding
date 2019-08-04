@@ -19,7 +19,7 @@ if (typeof localStorage !== "undefined") {
         token: null,
         isLoggedIn: false,
         errMsg: null,
-        user: {}
+        user: null
     };
 }
 
@@ -33,7 +33,7 @@ export const authReducer = (state = initialState, action) => {
                     user: action.payload.user
                 });
         case DEAUTHENTICATE:
-            return {...state, token: null, isLoggedIn: false, user: {}};
+            return {...state, token: null, isLoggedIn: false, user: null};
         case AUTHENTICATION_FAILED:
                 return {...state, errMsg: action.payload};
         default:

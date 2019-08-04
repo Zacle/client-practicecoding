@@ -1,8 +1,13 @@
-import {AUTHENTICATE, DEAUTHENTICATE, AUTHENTICATION_FAILED} from '../ActionTypes';
+import {AUTHENTICATE,
+    DEAUTHENTICATE,
+    AUTHENTICATION_FAILED
+} from '../ActionTypes';
 import axios from 'axios';
 import { API } from '../../config';
 import { setCookie, removeCookie } from '../../utils/cookie';
 import Router from 'next/router';
+import {API_ERRORS} from '../../utils/httpError';
+import {HTTPStatusCodes} from '../../utils/httpCode';
 
 
 /**
@@ -46,7 +51,7 @@ export const login = user => dispatch => {
             })
             .then((response) => {
                 console.log("DATA: ", response.data);
-                setCookie("auth", {
+                let auth = {
                     token: response.data.token,
                     isLoggedIn: true,
                     user: {
@@ -54,20 +59,35 @@ export const login = user => dispatch => {
                         email: response.data.user.email,
                         username: response.data.user.username
                     }
-                });
+                };
+                setCookie("auth", auth);
                 Router.push("/");
                 dispatch(authenticateUser(response.data));
             })
             .catch((err) => {
-                console.log("Login Error: ", err.response.data);
-                dispatch(authenticationFailed(err.response.data));
+                if (err.response) {
+                    switch (err.response.status) {
+                        case HTTPStatusCodes.REQUEST_TIMEOUT:
+                            return dispatch(authenticationFailed(API_ERRORS.REQUEST_TIMEOUT.message));
+                        case HTTPStatusCodes.INTERNAL_SERVER_ERROR:
+                            return dispatch(authenticationFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                        default :
+                            return dispatch(authenticationFailed(err.response.data));
+                    }
+                }
+                else if (err.request) {
+                    dispatch(authenticationFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(authenticationFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
             });
 }
 
 export const authenticationFailed = (errMsg) => {
     return {
         type: AUTHENTICATION_FAILED,
-        payload: errMsg
+        payload: errMsg.err || errMsg
     }
 }
 
@@ -77,7 +97,7 @@ export const authenticationFailed = (errMsg) => {
  */
 export const reauthenticate = auth => {
     return (dispatch) => {
-        dispatch(authenticateUser(auth));
+        dispatch(authenticateUser(JSON.parse(decodeURIComponent(auth))));
     }
 }
 
@@ -106,11 +126,24 @@ export const register = user => dispatch => {
                 }
             })
             .then((response) => {
-                console.log("DATA: ", response.data);
                 Router.push("/login");
             })
             .catch((err) => {
-                console.log("Login Error: ", err.response.data);
-                dispatch(authenticationFailed(err.response.data));
+                if (err.response) {
+                    switch (err.response.status) {
+                        case HTTPStatusCodes.REQUEST_TIMEOUT:
+                            return dispatch(authenticationFailed(API_ERRORS.REQUEST_TIMEOUT.message));
+                        case HTTPStatusCodes.INTERNAL_SERVER_ERROR:
+                            return dispatch(authenticationFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                        default:
+                            return dispatch(authenticationFailed(err.response.data));
+                    }
+                }
+                else if (err.request) {
+                    dispatch(authenticationFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(authenticationFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
             });
 }

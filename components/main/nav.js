@@ -65,7 +65,7 @@ export default class extends Component {
                     </a>
                   </Link>
                 </li>
-                <LoginNav deauthenticate={this.props.deauthenticate} isLoggedIn={this.props.isLoggedIn} username={this.props.username} />
+                <LoginNav deauthenticate={this.props.deauthenticate} isLoggedIn={this.props.isLoggedIn} user={this.props.user} />
               </ul>
             </div>
         </nav>

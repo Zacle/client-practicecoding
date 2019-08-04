@@ -5,7 +5,7 @@ import Head from '../components/main/head';
 import { FacebookLoginButton, GithubLoginButton, LinkedInLoginButton } from "react-social-login-buttons";
 import { connect } from 'react-redux';
 import { register } from '../redux/actions/authActions';
-import { Form, Input, FormFeedback,UncontrolledAlert } from 'reactstrap';
+import { Form, Input, FormFeedback, Alert } from 'reactstrap';
 import countryList from 'react-select-country-list';
 import Option from '../components/main/option';
 
@@ -34,7 +34,8 @@ class Register extends Component {
                 password: false,
                 confirmation: false
             },
-            options: this.options
+            options: this.options,
+            visible: true
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -112,9 +113,7 @@ class Register extends Component {
             fullname: this.state.fullname,
             country: this.state.country
         }
-        alert("Email: " + user.email + ", Password: " + user.password + 
-                ", Username: " + user.username + ", Full Name: " + user.fullname
-                + ", Country: " + user.country);
+        this.props.register(user);
         
     }
 
@@ -140,12 +139,12 @@ class Register extends Component {
                                 <img src="../static/images/face.png" />
                             </div>
                             <div className="col-12 form-input">
-                                {this.props.user.error &&
+                                {this.props.user.errMsg &&
                                 (
                                     <div>
-                                        <UncontrolledAlert color="danger">
-                                            {this.props.user.error}
-                                        </UncontrolledAlert>
+                                        <Alert color="danger">
+                                            {this.props.user.errMsg}
+                                        </Alert>
                                     </div>
                                 )}
                                 <Form onSubmit={this.handleSubmit} noValidate>

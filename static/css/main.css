@@ -57,7 +57,7 @@ h1 {
   background-color: rgb(37, 39, 39); 
 }
   
-.navbar-custom .navbar-nav > li > .dropdown-menu > li > a {
+.dropdown-item > a {
   color: #FFF; 
 }
   
@@ -65,4 +65,38 @@ h1 {
 .navbar-custom .navbar-nav > li > .dropdown-menu > li > a:focus {
   color: rgb(14, 13, 13);
   background-color: rgb(250, 249, 249);
+}
+
+.sub-nav {
+  margin-top: 70px;
+  margin-bottom: 25px;
+  font-size: 15px;
+}
+
+.info {
+  margin: 200px 75px 75px 75px;
+}
+
+.sub-nav .row .links a {
+  padding-right: 5px;
+  color: black;
+  text-decoration: none;
+  font-family: 'Bree Serif', serif;
+}
+
+.sub-nav .row .links a:hover {
+  color: white;
+  background-color: black;
+  border-radius: 25px;
+}
+
+.error {
+  font-family: "Crimson Pro', serif";
+  font-size: 20px;
+  color: red;
+}
+
+.profile {
+  font-family: "Roboto Slab', serif;";
+  font-size: 15px;
 }
