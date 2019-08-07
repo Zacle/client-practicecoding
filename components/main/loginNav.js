@@ -49,6 +49,11 @@ const Logged = ({username, deauthenticate}) => {
                             <a className="dropdown-item">TODO</a>
                         </Link>
                     </DropdownItem>
+                    <DropdownItem className="dropdown-item">
+                        <Link prefetch href="/settings">
+                            <a href="/settings" className="dropdown-item">Settings</a>
+                        </Link>
+                    </DropdownItem>
                 </DropdownMenu>
             </UncontrolledDropdown>
             <li className="nav-item">

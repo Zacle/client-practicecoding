@@ -1,22 +1,46 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-    Form,
-    FormGroup,
-    Input,
-    Container
-} from 'reactstrap';
-import Link from 'next/link';
 import Head from '../components/main/head';
-import { FacebookLoginButton, GithubLoginButton, LinkedInLoginButton } from "react-social-login-buttons";
+import { connect } from 'react-redux';
+import { forgotPassword } from '../redux/actions/authActions';
+import {Alert, UncontrolledAlert} from 'reactstrap';
 
 /**
  * Login Page
  */
-export default class extends Component {
+class Forgot extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            email: '',
+            submit: false
+        };
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    async handleSubmit(e) {
+        e.preventDefault();
+        const email = {
+            email: this.state.email
+        };
+        await this.props.forgotPassword(email);
+        await this.setState({
+            submit: true
+        });
+    }
+
+    async handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+    
+        await this.setState({
+          [name]: value
+        });
     }
 
     render() {
@@ -30,13 +54,32 @@ export default class extends Component {
                                 <img src="../static/images/face.png" />
                             </div>
                             <div className="col-12 form-input">
-                                <form>
+                                {this.state.submit && this.props.user.forgot &&
+                                (
+                                    <Alert color="danger">
+                                        {this.props.user.forgot}
+                                    </Alert>
+                                )}
+                                {this.state.submit && !this.props.user.forgot &&
+                                (
+                                    <UncontrolledAlert color="success">
+                                        <p>An email has been sent to reset your password.</p>
+                                        <p>If you can't see it. Check your spam folder</p>
+                                    </UncontrolledAlert>
+                                )}
+                                <form onSubmit={this.handleSubmit} noValidate>
                                     <div className="form-group">
                                         <div className="input-group mb-2">
                                             <div className="input-group-prepend">
                                                 <div className="input-group-text"><FontAwesomeIcon icon="envelope" /></div>
                                             </div>
-                                            <input type="email" className="form-control" placeholder="Enter Email" name="email" />
+                                            <input type="email"
+                                                   className="form-control"
+                                                   placeholder="Enter Email"
+                                                   name="email"
+                                                   required
+                                                   value={this.state.email}
+                                                   onChange={this.handleInputChange} />
                                         </div>
                                     </div>
                                     <button type="submit" className="btn btn-primary" >Submit</button>
@@ -107,3 +150,8 @@ export default class extends Component {
         );
     }
 }
+
+export default connect(
+    state => ({user: state.authentication}),
+    { forgotPassword }
+)(Forgot);

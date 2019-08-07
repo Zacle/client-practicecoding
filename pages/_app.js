@@ -6,12 +6,13 @@ import { Store } from '../redux/store';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faBell, faEnvelope, faKey, faUser,
-    faUserLock, faGlobe, faEdit, faTrashAlt, faUserTimes
+    faUserLock, faGlobe, faEdit, faTrashAlt, faUserTimes,
+    faSpinner
 } from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
 library.add(fab, faBell, faEnvelope, faKey, faUser, faUserLock, faGlobe,
-    faEdit, faTrashAlt, faUserTimes);
+    faEdit, faTrashAlt, faUserTimes, faSpinner);
 
 class MyApp extends App {
 

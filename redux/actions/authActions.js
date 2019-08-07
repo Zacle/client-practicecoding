@@ -1,6 +1,10 @@
 import {AUTHENTICATE,
     DEAUTHENTICATE,
-    AUTHENTICATION_FAILED
+    AUTHENTICATION_FAILED,
+    FORGOT_PASSWORD_FAILED,
+    FORGOT_PASSWORD,
+    RESET_PASSWORD,
+    RESET_PASSWORD_FAILED
 } from '../ActionTypes';
 import axios from 'axios';
 import { API } from '../../config';
@@ -144,6 +148,89 @@ export const register = user => dispatch => {
                 }
                 else {
                     dispatch(authenticationFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+export const resetPassword = (msg) => {
+    return {
+        type: FORGOT_PASSWORD,
+        payload: msg
+    }
+}
+
+export const resetPasswordFailed = (errMsg) => {
+    return {
+        type: FORGOT_PASSWORD_FAILED,
+        payload: errMsg.err || errMsg
+    }
+}
+
+/**
+ * Send password token to the user's email
+ * @param {*} email 
+ */
+export const forgotPassword = email => dispatch => {
+    return axios.post(`${API}/users/forgot`,
+            email,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => dispatch(resetPassword("Email sent")))
+            .catch(err => {
+                if (err.response) {
+                    dispatch(resetPasswordFailed(err.response.data));
+                }
+                else if (err.request) {
+                    dispatch(resetPasswordFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(resetPasswordFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+export const passwordToken = (msg) => {
+    return {
+        type: RESET_PASSWORD,
+        payload: msg
+    }
+}
+
+export const passwordTokenFailed = (errMsg) => {
+    return {
+        type: RESET_PASSWORD_FAILED,
+        payload: errMsg.err || errMsg
+    }
+}
+
+/**
+ * Reset the user's password based on the token received
+ * @param {*} password 
+ * @param {*} token 
+ */
+export const resetPasswordToken = (password, token) => dispatch => {
+    return axios.post(`${API}/users/reset/${token}`,
+            password,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(result => Router.push("/login"))
+            .catch(err => {
+                if (err.response) {
+                    dispatch(passwordTokenFailed(err.response.data));
+                }
+                else if (err.request) {
+                    dispatch(passwordTokenFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(passwordTokenFailed(API_ERRORS.GENERAL_ERROR.message));
                 }
             });
 }

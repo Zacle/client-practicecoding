@@ -1,4 +1,9 @@
-import {AUTHENTICATE, DEAUTHENTICATE, AUTHENTICATION_FAILED} from '../ActionTypes';
+import {AUTHENTICATE,
+    DEAUTHENTICATE, 
+    AUTHENTICATION_FAILED,
+    FORGOT_PASSWORD_FAILED,
+    RESET_PASSWORD_FAILED
+} from '../ActionTypes';
 import { getCookie } from '../../utils/cookie';
 
 let initialState;
@@ -11,7 +16,9 @@ if (typeof localStorage !== "undefined") {
             token: null,
             isLoggedIn: false,
             errMsg: null,
-            user: {}
+            user: null,
+            forgot: null,
+            reset: null
         }
     }
 } else {
@@ -19,7 +26,9 @@ if (typeof localStorage !== "undefined") {
         token: null,
         isLoggedIn: false,
         errMsg: null,
-        user: null
+        user: null,
+        forgot: null,
+        reset: null
     };
 }
 
@@ -35,8 +44,12 @@ export const authReducer = (state = initialState, action) => {
         case DEAUTHENTICATE:
             return {...state, token: null, isLoggedIn: false, user: null};
         case AUTHENTICATION_FAILED:
-                return {...state, errMsg: action.payload};
+            return {...state, errMsg: action.payload};
+        case FORGOT_PASSWORD_FAILED:
+            return {...state, forgot: action.payload};
+        case RESET_PASSWORD_FAILED:
+            return {...state, reset: action.payload};
         default:
-                return state;
+            return state;
     }
 }

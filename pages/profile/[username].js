@@ -6,6 +6,8 @@ import init from '../../utils/initialize';
 import {deauthenticate} from '../../redux/actions/authActions';
 import {getUser} from '../../redux/actions/userActions';
 import Layout from '../../components/main/layout';
+import Loading from '../../components/loading';
+
 
 class Profile extends Component {
 
@@ -42,8 +44,8 @@ class Profile extends Component {
             return (
                 <>
                     <ProfileLayout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title} description={description} username={this.username}>
-                        <div className="container">
-                            <div className="profile justify-content-left" style={{fontFamily: "Crimson Pro', serif"}}>
+                        <div className="shadow bg-white rounded container">
+                            <div className="profile justify-content-center" style={{fontFamily: "Crimson Pro', serif"}}>
                                 <div className="row">
                                     <div className="col-4 col-md-4">Full Name: </div>
                                     <div className="col-8 col-md-6">{this.props.user.user.fullname}</div>
@@ -61,7 +63,7 @@ class Profile extends Component {
                                     <div className="col-8 col-md-6">{this.props.user.user.livearchive}</div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-4 col-md-4">Join on: </div>
+                                    <div className="col-4 col-md-4">Joined on: </div>
                                     <div className="col-8 col-md-6">{this.props.user.user.joined}</div>
                                 </div>
                             </div>
@@ -71,15 +73,8 @@ class Profile extends Component {
             );
         }
         else {
-            const title = "Loading... | Practice Coding OJ";
             return (
-                <Layout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title}>
-                    <div className="info container">
-                        <div className="row justify-content-center">
-                            <p className="text-info">Loading...</p>
-                        </div>
-                    </div>
-                </Layout>
+                <Loading auth={this.props.auth} deauthenticate={this.props.deauthenticate} />
             );
         }
     }

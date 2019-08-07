@@ -1,55 +1,76 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Head from '../../components/main/head';
 import { connect } from 'react-redux';
-import { login } from '../redux/actions/authActions';
-import Link from 'next/link';
-import Head from '../components/main/head';
+import {withRouter} from 'next/router';
+import { resetPasswordToken } from '../../redux/actions/authActions';
 import { Form, Input, FormFeedback, Alert } from 'reactstrap';
-import { FacebookLoginButton, GithubLoginButton, LinkedInLoginButton } from "react-social-login-buttons";
 
 /**
  * Login Page
  */
-class Login extends Component {
+class ResetPassword extends Component {
 
     constructor(props) {
         super(props);
 
+        this.token = this.props.router.query.token;
+
         this.state = {
-            email: '',
             password: '',
+            confirmation: '',
+            submit: false,
             touched: {
-                email: false,
-                password: false
-            },
-            visible: true
+                password: false,
+                confirmation: false
+            }
         };
+
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
     }
 
-    validate(email) {
+    validate() {
         const errors = {
-            email: ''
+            password: '',
+            confirmation: ''
         };
 
-        if (this.state.touched.email) {
-            if (!this.validateEmail(email)) {
-                errors.email = "Invalid email";
+        if (this.state.touched.password) {
+            if (this.state.password.length < 7) {
+                errors.password = "Password length must be at least 7";
             }
         }
+        if (this.state.touched.confirmation) {
+            if (this.state.confirmation !== this.state.password) {
+                errors.confirmation = "Passwords don't match";
+            }
+        }
+
         return errors;
     }
 
-    validateEmail(email) {
-        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return re.test(email);
+    handleBlur = (field) => async (evt) => {
+        await this.setState({
+          touched: { ...this.state.touched, [field]: true },
+        });
     }
 
-    handleBlur = (field) => (evt) => {
-        this.setState({
-          touched: { ...this.state.touched, [field]: true },
+    async handleSubmit(e) {
+        e.preventDefault();
+        const new_password = {
+            password: this.state.password
+        };
+        await this.props.resetPasswordToken(new_password, this.token);
+        await this.setState({
+            submit: true
+        });
+    }
+
+    async componentDidMount() {
+        await this.setState({
+            submit: false
         });
     }
 
@@ -63,21 +84,13 @@ class Login extends Component {
         });
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        const user = {
-            email: this.state.email,
-            password: this.state.password
-        }
-        this.props.login(user);
-    }
-
     render() {
-        const errors = this.validate(this.state.email);
-        let error = errors.email !== '' || (errors.email === '' && this.state.password === '');
+        const errors = this.validate();
+        const InputError = (errors.password !== '' || errors.confirmation !== '');
+        const empty = (this.state.password === '' || this.state.confirmation === '');
         return (
             <>
-                <Head title="Sign in | Practice Coding OJ" description="Sign in to Practcice Coding OJ"/>
+                <Head title="Reset Password | Practice Coding OJ" description="Sign in to Practcice Coding OJ"/>
                 <div className="modal-dialog text-center">
                     <div className="col-sm-9 main-section">
                         <div className="modal-content">
@@ -85,61 +98,57 @@ class Login extends Component {
                                 <img src="../static/images/face.png" />
                             </div>
                             <div className="col-12 form-input">
-                                    {this.props.user.errMsg &&
-                                    (
-                                        <Alert color="danger">
-                                            {this.props.user.errMsg}
-                                        </Alert>
-                                    )}
+                                {this.state.submit && this.props.user.reset &&
+                                (
+                                    <Alert color="danger">
+                                        {this.props.user.reset}
+                                    </Alert>
+                                )}
+                                {this.state.submit && !this.props.user.reset &&
+                                (
+                                    <Alert color="success">
+                                        <p>An email has been sent to reset your password.</p>
+                                        <p>If you can't see it. Check your spam folder</p>
+                                    </Alert>
+                                )}
                                 <Form onSubmit={this.handleSubmit} noValidate>
-                                    
-                                    <div className="form-group">
-                                        <div className="input-group mb-2">
-                                            <div className="input-group-prepend">
-                                                <div className="input-group-text"><FontAwesomeIcon icon="envelope" /></div>
-                                            </div>
-                                            <Input type="email" 
-                                                   className="form-control" 
-                                                   placeholder="Enter Email" 
-                                                   name="email"
-                                                   valid={errors.email === ''}
-                                                   invalid={errors.email !== ''}
-                                                   onBlur={this.handleBlur('email')}
-                                                   required
-                                                   value={this.state.email}
-                                                   onChange={this.handleInputChange} />
-                                            <FormFeedback> {errors.email} </FormFeedback>
-                                        </div>
-                                    </div>
                                     <div className="form-group">
                                         <div className="input-group mb-2">
                                             <div className="input-group-prepend">
                                                 <div className="input-group-text"><FontAwesomeIcon icon="key" /></div>
                                             </div>
-                                            <Input type="password" 
-                                                   className="form-control" 
-                                                   placeholder="Enter Password" 
+                                            <Input type="password"
+                                                   className="form-control"
+                                                   placeholder="New Password"
                                                    name="password"
                                                    required
+                                                   valid={errors.password === ''}
+                                                   invalid={errors.password !== ''}
+                                                   onBlur={this.handleBlur('password')}
                                                    value={this.state.password}
-                                                   onChange={this.handleInputChange}/>
+                                                   onChange={this.handleInputChange} />
+                                            <FormFeedback> {errors.password} </FormFeedback>
+                                        </div>
+                                        <div className="input-group mb-2">
+                                            <div className="input-group-prepend">
+                                                <div className="input-group-text"><FontAwesomeIcon icon="key" /></div>
+                                            </div>
+                                            <Input type="password"
+                                                   className="form-control"
+                                                   placeholder="Confirm New Password"
+                                                   name="confirmation"
+                                                   required
+                                                   valid={errors.confirmation === ''}
+                                                   invalid={errors.confirmation !== ''}
+                                                   onBlur={this.handleBlur('confirmation')}
+                                                   value={this.state.confirmation}
+                                                   onChange={this.handleInputChange} />
+                                            <FormFeedback> {errors.confirmation} </FormFeedback>
                                         </div>
                                     </div>
-                                    {error && (<button type="submit" className="btn btn-danger" disabled>Login</button>)}
-                                    {!error && (<button type="submit" className="btn btn-primary">Login</button>)}
+                                    {(InputError || empty) && (<button type="submit" className="btn btn-danger" disabled>Reset</button>)}
+                                    {(!InputError && !empty) && (<button type="submit" className="btn btn-primary">Reset</button>)}
                                 </Form>
-                            </div>
-                            <div className="col-12 forgot">
-                                <Link prefetch href="/forgot" ><a href="/forgot">Forgot Password?</a></Link>
-                            </div>
-                            <div className="col-12 forgot">
-                                <span style={{color: "white"}}>Don't have an account?</span> <Link prefetch href="/register" ><a href="register">Register</a></Link>
-                            </div>
-                            <div className="col-12">
-                                <p style={{color: "white"}}>Or</p>
-                                <FacebookLoginButton />
-                                <GithubLoginButton />
-                                <LinkedInLoginButton />
                             </div>
                         </div>
                     </div>
@@ -207,7 +216,7 @@ class Login extends Component {
     }
 }
 
-export default connect(
+export default withRouter(connect(
     state => ({user: state.authentication}),
-    { login }
-)(Login);
+    { resetPasswordToken }
+)(ResetPassword));

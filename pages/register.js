@@ -248,7 +248,7 @@ class Register extends Component {
                                             </select>
                                         </div>
                                     </div>
-                                    {(InputError || empty) && (<button type="submit" className="btn btn-primary" disabled>Register</button>)}
+                                    {(InputError || empty) && (<button type="submit" className="btn btn-danger" disabled>Register</button>)}
                                     {(!InputError && !empty) && (<button type="submit" className="btn btn-primary">Register</button>)}
                                 </Form>
                             </div>
