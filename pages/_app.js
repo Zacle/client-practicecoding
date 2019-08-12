@@ -7,12 +7,14 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { faBell, faEnvelope, faKey, faUser,
     faUserLock, faGlobe, faEdit, faTrashAlt, faUserTimes,
-    faSpinner
+    faSpinner, faSave
 } from '@fortawesome/free-solid-svg-icons';
 import '@fortawesome/fontawesome-svg-core/styles.css';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+
 
 library.add(fab, faBell, faEnvelope, faKey, faUser, faUserLock, faGlobe,
-    faEdit, faTrashAlt, faUserTimes, faSpinner);
+    faEdit, faTrashAlt, faUserTimes, faSpinner, faSave);
 
 class MyApp extends App {
 

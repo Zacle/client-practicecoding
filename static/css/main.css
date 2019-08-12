@@ -104,3 +104,8 @@ h1 {
 h2 {
   font-family: "Roboto Slab', serif";
 }
+
+table tr {
+  font-family: 'Bree Serif', serif;
+  font-size: 15px;
+}

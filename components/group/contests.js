@@ -48,7 +48,7 @@ const Contests = ({contests=[]}) => {
 
     return (
         <>
-            <table className="table table-bordered table-striped table-responsive-sm table-hover">
+            <table className="table table-sm table-bordered table-striped table-responsive-sm table-hover">
                 <thead>
                     <tr>
                         <th>Name</th>

@@ -175,7 +175,7 @@ export default class extends Component {
                         <div className="form-group row">
                             <label htmlFor="country" className="col-4 col-form-label col-form-label-sm">Country</label>
                             <div className="col-8 col-md-4">
-                                <select type="select" className="form-control" name="country" onChange={this.handleInputChange} value={this.state.country}>
+                                <select id="country" type="select" className="form-control form-control-sm" name="country" onChange={this.handleInputChange} value={this.state.country}>
                                     <Option options={this.state.options} />
                                 </select>
                             </div>
