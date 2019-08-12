@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-const Problem = ({problem}) => {
+const Problem = ({problem, saveTodo}) => {
     if (!problem) {
         return (
             <></>
@@ -25,7 +25,7 @@ const Problem = ({problem}) => {
                         <td> {problem.name} </td>
                         <td> {problem.plateform} </td>
                         <td> {problem.difficulty} </td>
-                        <td> <span data-toggle="tooltip" data-placement="top" title="Save to solve later"><FontAwesomeIcon icon="save" /></span> </td>
+                        <td> <button className="btn" onClick={() => saveTodo(problem._id)}><span data-toggle="tooltip" data-placement="top" title="Save to solve later"><FontAwesomeIcon icon="save" /></span></button> </td>
                         <td> <a href={`${problem.link}`} target="_blank"> Solve </a> </td>
                     </tr>
                 </tbody>

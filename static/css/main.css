@@ -77,6 +77,10 @@ h1 {
   margin: 200px 75px 75px 75px;
 }
 
+.todos {
+  margin-top: 150px;
+}
+
 .sub-nav .row .links a {
   padding-right: 5px;
   color: black;

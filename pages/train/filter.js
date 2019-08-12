@@ -6,7 +6,8 @@ import {deauthenticate} from '../../redux/actions/authActions';
 import {filterProblems} from '../../redux/actions/trainActions';
 import Problems from '../../components/train/problems';
 import Pagination from '../../components/train/pagination';
-
+import axios from 'axios';
+import {API} from '../../config';
 
 class TrainFiltered extends Component {
 
@@ -21,6 +22,30 @@ class TrainFiltered extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.onPageChanged = this.onPageChanged.bind(this);
+        this.save = this.save.bind(this);
+    }
+
+    save(problemID) {
+        axios.post(`${API}/todos/`,
+        {
+            problemID: problemID
+        },
+        {
+            headers: {
+                Accept: "application/json",
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.props.auth.token
+            }
+        })
+        .then(() => alert("Problem saved to todo list"))
+        .catch((err) => {
+            if (err.response) {
+                alert(err.response.data);
+            }
+            else {
+                alert("Sorry! A server error occurred. Try to save this problem later!");
+            }
+        });
     }
 
     async handleInputChange(event) {
@@ -117,7 +142,7 @@ class TrainFiltered extends Component {
                         <div className="row justify-content-center">
                             {this.props.filter.problems && 
                                 (<>
-                                    <Problems problems={this.props.filter.problems} />
+                                    <Problems save={this.save} problems={this.props.filter.problems} />
                                     <br />
                                     <div className="d-flex flex-row py-4 align-items-center">
                                         <Pagination totalRecords={this.props.filter.total} pageLimit={this.props.filter.per_page} pageNeighbours={2} onPageChanged={this.onPageChanged} />

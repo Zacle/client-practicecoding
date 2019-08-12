@@ -1,28 +1,34 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Problem = ({problem, save}) => {
+const Todo = ({problem, added, remove}) => {
+    const date = new Date(added);
     return (
         <tr key={problem._id} className="text-center">
             <td> {problem.name} </td>
             <td> {problem.plateform} </td>
             <td> {problem.difficulty} </td>
-            <td> <button className="btn" onClick={() => save(problem._id)}><span data-toggle="tooltip" data-placement="top" title="Save to solve later"><FontAwesomeIcon icon="save" /></span></button> </td>
+            <td>{date.toLocaleString('en-GB')}</td>
+            <td> <button className="btn" onClick={() => remove(problem._id)}><span data-toggle="tooltip" data-placement="top" title="Remove from todos list"><FontAwesomeIcon icon="trash-alt" /></span></button> </td>
             <td> <a href={`${problem.link}`} target="_blank"> Solve </a> </td>
         </tr>
     );
 }
 
-const Problems = ({problems = [], save}) => {
-    if (problems.length === 0) {
+const TodoList = ({todos = [], remove}) => {
+    if (todos.length === 0) {
         return (
-            <></>
+            <>
+                <div className="row justify-content-center">
+                    You have no TODO currently.
+                </div>
+            </>
         );
     }
 
-    const map = problems.map((problem, i) => {
+    const map = todos.map((todo, i) => {
         return (
-            <Problem save={save} key={i+1} problem={problem} />
+            <Todo remove={remove} key={i+1} added={todo.added} problem={todo.problemID} />
         );
     });
 
@@ -34,7 +40,8 @@ const Problems = ({problems = [], save}) => {
                         <th>Name</th>
                         <th>Online Judge</th>
                         <th>Difficulty</th>
-                        <th>Add Todo</th>
+                        <th>Added On</th>
+                        <th>Remove Todo</th>
                         <th>Solve</th>
                     </tr>
                 </thead>
@@ -46,4 +53,4 @@ const Problems = ({problems = [], save}) => {
     );
 }
 
-export default Problems;
+export default TodoList;

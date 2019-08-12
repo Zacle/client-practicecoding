@@ -5,12 +5,14 @@ import logger from 'redux-logger';
 import { authReducer } from './reducers/authReducer';
 import { userInfoReducer } from './reducers/userInfoReducer';
 import { trainReducer } from './reducers/trainReducer';
+import { todosReducer } from './reducers/todoReducer';
 
 
 const reducers = combineReducers({
     authentication: authReducer,
     user: userInfoReducer,
-    filterTrain: trainReducer
+    filterTrain: trainReducer,
+    todos: todosReducer
 });
 
 export const Store = (initialState = {}) => {

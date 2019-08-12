@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import TrainLayout from '../components/train/trainLayout';
+import TrainLayout from '../../components/train/trainLayout';
 import {connect} from 'react-redux';
-import init from '../utils/initialize';
-import {deauthenticate} from '../redux/actions/authActions';
+import init from '../../utils/initialize';
+import {deauthenticate} from '../../redux/actions/authActions';
 import {AsyncTypeahead, Highlighter} from 'react-bootstrap-typeahead';
-import {API} from '../config';
+import {API} from '../../config';
 import axios from 'axios';
-import Problem from '../components/train/problemSelected';
+import Problem from '../../components/train/problemSelected';
 
 
 class Train extends Component {
@@ -21,6 +21,7 @@ class Train extends Component {
             options: []
         };
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.saveTodo = this.saveTodo.bind(this);
     }
 
     async handleInputChange(event) {
@@ -33,6 +34,29 @@ class Train extends Component {
         });
     }
 
+    saveTodo(id) {
+        axios.post(`${API}/todos/`,
+        {
+            problemID: id
+        },
+        {
+            headers: {
+                Accept: "application/json",
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + this.props.auth.token
+            }
+        })
+        .then(() => alert("Problem saved to todo list"))
+        .catch((err) => {
+            if (err.response) {
+                alert(err.response.data);
+            }
+            else {
+                alert("Sorry! A server error occurred. Try to save this problem later!");
+            }
+        });
+    }
+
     static getInitialProps(ctx) {
         init(ctx, true);
     }
@@ -40,7 +64,7 @@ class Train extends Component {
     render() {
         const title = "Search a problem to train | Practice Coding OJ";
         const description = "Train on Practice Coding OJ";
-
+        
         return (
             <>
                 <TrainLayout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title} description={description} >
@@ -110,8 +134,9 @@ class Train extends Component {
                     <br /><br />
                     <div className="container">
                         <div className="row justify-content-center">
-                            {this.state.selected &&
-                            (<Problem problem={this.state.selected[0]} />)
+                            {!!this.state.selected &&
+                            (
+                            <Problem saveTodo={this.saveTodo} problem={this.state.selected[0]} />)
                             }
                         </div>
                     </div>
