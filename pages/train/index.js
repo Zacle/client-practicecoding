@@ -3,7 +3,7 @@ import TrainLayout from '../../components/train/trainLayout';
 import {connect} from 'react-redux';
 import init from '../../utils/initialize';
 import {deauthenticate} from '../../redux/actions/authActions';
-import {AsyncTypeahead, Highlighter} from 'react-bootstrap-typeahead';
+import {AsyncTypeahead} from 'react-bootstrap-typeahead';
 import {API} from '../../config';
 import axios from 'axios';
 import Problem from '../../components/train/problemSelected';

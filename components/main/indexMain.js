@@ -45,7 +45,7 @@ const SecondMenu = () => {
             <div className = "shadow bg-white rounded col-12 col-md m-1">
                 <h1 className="text-center">Want to train?</h1>
                 <p className="text-center">You can improve your coding skills by solving problems from various online Platforms that match your current level.</p>
-                <p className="text-center">Go ahead and <Link prefetch href="/"><a style={{textDecoration: "none"}} href="#">train </a></Link>
+                <p className="text-center">Go ahead and <Link prefetch href="/train"><a style={{textDecoration: "none"}} href="/train">train </a></Link>
                     to improve yourself
                 </p>
             </div>

@@ -35,7 +35,7 @@ class Todos extends Component {
                 <Layout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title}>
                     <div className="info container">
                         <div className="row justify-content-center">
-                            <p className="error">{this.props.user.error}</p>
+                            <p className="error">{this.props.todos.error}</p>
                         </div>
                     </div>
                 </Layout>
