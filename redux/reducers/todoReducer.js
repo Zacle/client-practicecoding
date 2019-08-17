@@ -7,7 +7,7 @@ import {
 
 let initialState = {
     error: null,
-    todos: []
+    todos: null
 };
 
 export const todosReducer = (state = initialState, action) => {

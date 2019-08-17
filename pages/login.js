@@ -74,7 +74,7 @@ class Login extends Component {
 
     render() {
         const errors = this.validate(this.state.email);
-        let error = errors.email !== '' || (errors.email === '' && this.state.password === '');
+        let error = errors.email !== '' || (this.state.email === '' && this.state.password === '');
         return (
             <>
                 <Head title="Sign in | Practice Coding OJ" description="Sign in to Practcice Coding OJ"/>

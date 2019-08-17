@@ -14,7 +14,7 @@ const Member = ({team, user, remove, member}) => {
     if (admin) {
         return (
             <div >
-                <FontAwesomeIcon icon="user" className="" />
+                <FontAwesomeIcon icon="user" />
                 <Link prefetch href="/profile/[username]" as={"/profile/" + member.username} ><a className="ml-2" href={"/profile/" + member.username}>{member.username}</a></Link>
             </div>
         );

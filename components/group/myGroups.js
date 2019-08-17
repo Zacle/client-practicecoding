@@ -3,53 +3,86 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-const Group = ({group}) => {
+const Group = ({group, count, user, remove}) => {
     let date = new Date(group.creation);
+    let canDelete = false;
+    if (user) {
+        canDelete = group.admin.username === user.username;
+    }
     return (
         <>
-            <tr>
+            <tr className="text-center">
                 <td>
-                    <Link prefetch href="groups/[id]" as={"/groups/" + group._id} ><a href={"/groups/" + group._id}>{group.name}</a></Link>
+                    <Link prefetch href="/groups/[id]" as={"/groups/" + group._id} ><a href={"/groups/" + group._id}>{group.name}</a></Link>
                 </td>
                 <td>
                     <Link prefetch href="/profile/[username]" as={"/profile/" + group.admin.username} ><a href={"/profile/" + group.admin.username}>{group.admin.username}</a></Link>
                 </td>
                 <td>
+                    {count}
+                </td>
+                <td>
                     {date.toLocaleString('en-GB')}
                 </td>
                 <td>
-                    <FontAwesomeIcon icon="user-times" />
+                    {canDelete && (
+                        <button className="btn" onClick={() => remove(group._id)}><span data-toggle="tooltip" data-placement="top" title="Delete this group"><FontAwesomeIcon icon="trash-alt" /></span></button>
+                    )}
                 </td>
             </tr>
         </>
     );
 }
 
-const Groups = ({groups=[]}) => {
+const Groups = ({groups=[], username, user, remove}) => {
 
     if (groups.length === 0) {
         return (
             <>
                 <div className="row justify-content-center">
-                    You have no groups yet.
+                    No groups yet.
                 </div>
             </>
         );
     }
+    
+    let map;
 
-    const map = groups.map((group, i) => {
-        return (
-            <Group key={i} group={group} />
-        );
-    });
+    if (user && (user.username === username)) {
+        map = groups.map((group, i) => {
+            return (
+                <Group user={user} remove={remove} count={group.members.length} key={i} group={group} />
+            );
+        });
+    }
+    else {
+        const publicGroups = groups.filter(group => group.access !== 0);
+        if (publicGroups.length === 0) {
+            return (
+                <>
+                    <div className="row justify-content-center">
+                        No groups yet.
+                    </div>
+                </>
+            );
+        }
+        map = publicGroups.map((group, i) => {
+            return (
+                <Group user={user} remove={remove} count={group.members.length} key={i} group={group} />
+            );
+        });
+    }
+
+    
 
     return (
         <>
-            <table className="table table-bordered table-striped table-responsive-sm table-hover">
+            <table className="table table-sm table-bordered table-striped table-responsive-sm table-hover">
                 <thead>
-                    <tr>
+                    <tr className="text-center">
                         <th>Name</th>
-                        <th>Owner</th>
+                        <th>Admin</th>
+                        <th>Members Count</th>
                         <th>Creation</th>
                         <th>Option</th>
                     </tr>

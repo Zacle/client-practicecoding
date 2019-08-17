@@ -7,6 +7,7 @@ import { userInfoReducer } from './reducers/userInfoReducer';
 import { trainReducer } from './reducers/trainReducer';
 import { todosReducer } from './reducers/todoReducer';
 import { teamsReducer } from './reducers/teamReducer';
+import { groupsReducer } from './reducers/groupReducer';
 
 
 const reducers = combineReducers({
@@ -14,7 +15,8 @@ const reducers = combineReducers({
     user: userInfoReducer,
     filterTrain: trainReducer,
     todos: todosReducer,
-    teams: teamsReducer
+    teams: teamsReducer,
+    groups: groupsReducer
 });
 
 export const Store = (initialState = {}) => {

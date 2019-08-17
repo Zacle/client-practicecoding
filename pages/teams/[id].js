@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { withRouter } from 'next/router';
-import Link from 'next/link';
 import Layout from '../../components/main/layout';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink} from 'reactstrap';
 import classnames from 'classnames';
 import init from '../../utils/initialize';
 import {deauthenticate} from '../../redux/actions/authActions';
@@ -96,7 +95,7 @@ class Team extends Component {
                         {isAdmin && (
                         <div className="mt-5 container">
                             <div className="justify-content-center offset-md-3 col-md-7 offset-md-2">
-                                <h4>Invite a user</h4>
+                                <h4>Add a user</h4>
                                 <hr/>
                                 {deleteError && this.state.submit &&
                                 (

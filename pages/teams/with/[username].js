@@ -58,12 +58,8 @@ class UserTeams extends Component {
     }
 
     render () {
-        if (this.props.teams.isLoading) {
-            return (
-                <Loading auth={this.props.auth} deauthenticate={this.props.deauthenticate} />
-            );
-        }
-        else if (this.props.teams.error && !this.state.submit) {
+        
+        if (this.props.teams.error && !this.state.submit) {
             const title = "Practice Coding OJ";
             return (
                 <Layout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title}>
@@ -75,7 +71,7 @@ class UserTeams extends Component {
                 </Layout>
             );
         }
-        else {
+        else if (this.props.teams.teams) {
             let canAdd = false;
             if (this.props.auth.user) {
                 canAdd = this.username === this.props.auth.user.username;
@@ -84,7 +80,6 @@ class UserTeams extends Component {
         
             return (
                 <>
-                    <br />
                     <ProfileLayout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title} username={this.username}>
                         <br /><br />
                         {canAdd && 
@@ -127,6 +122,11 @@ class UserTeams extends Component {
                         </div>
                     </ProfileLayout>
                 </>
+            );
+        }
+        else {
+            return (
+                <Loading auth={this.props.auth} deauthenticate={this.props.deauthenticate} />
             );
         }
     }

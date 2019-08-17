@@ -20,7 +20,7 @@ let initialState = {
     deleteError: null,
     addError: null,
     error: null,
-    teams: []
+    teams: null
 };
 
 export const teamsReducer = (state = initialState, action) => {

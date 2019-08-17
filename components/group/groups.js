@@ -3,29 +3,30 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-const Team = ({team, count, user, remove}) => {
-    let date = new Date(team.creation);
+const Group = ({group, count, user, remove}) => {
+    let date = new Date(group.creation);
     let canDelete = false;
     if (user) {
-        canDelete = team.admin.username === user.username;
+        canDelete = group.admin.username === user.username;
     }
-
     return (
         <>
             <tr className="text-center">
                 <td>
-                    <Link prefetch href="/teams/[id]" as={"/teams/" + team._id} ><a href={"/teams/" + team._id}>{team.name}</a></Link>
+                    <Link prefetch href="/groups/[id]" as={"/groups/" + group._id} ><a href={"/groups/" + group._id}>{group.name}</a></Link>
                 </td>
                 <td>
-                    <Link prefetch href="/profile/[username]" as={"/profile/" + team.admin.username} ><a href={"/profile/" + team.admin.username}>{team.admin.username}</a></Link>
+                    <Link prefetch href="/profile/[username]" as={"/profile/" + group.admin.username} ><a href={"/profile/" + group.admin.username}>{group.admin.username}</a></Link>
                 </td>
-                <td> {count} </td>
+                <td>
+                    {count}
+                </td>
                 <td>
                     {date.toLocaleString('en-GB')}
                 </td>
                 <td>
                     {canDelete && (
-                        <button className="btn" onClick={() => remove(team._id)}><span data-toggle="tooltip" data-placement="top" title="Delete this team"><FontAwesomeIcon icon="trash-alt" /></span></button>
+                        <button className="btn" onClick={() => remove(group._id)}><span data-toggle="tooltip" data-placement="top" title="Delete this group"><FontAwesomeIcon icon="trash-alt" /></span></button>
                     )}
                 </td>
             </tr>
@@ -33,21 +34,21 @@ const Team = ({team, count, user, remove}) => {
     );
 }
 
-const Teams = ({teams = [], remove, user}) => {
+const PublicGroups = ({groups=[], user, remove}) => {
 
-    if (teams.length === 0) {
+    if (groups.length === 0) {
         return (
             <>
                 <div className="row justify-content-center">
-                    No teams yet.
+                    No groups yet.
                 </div>
             </>
         );
     }
-
-    const map = teams.map((team, i) => {
+    
+    const map = groups.map((group, i) => {
         return (
-            <Team user={user} remove={remove} key={i} count={team.members.length} team={team} />
+            <Group user={user} remove={remove} count={group.members.length} key={i} group={group} />
         );
     });
 
@@ -57,8 +58,8 @@ const Teams = ({teams = [], remove, user}) => {
                 <thead>
                     <tr className="text-center">
                         <th>Name</th>
-                        <th>Owner</th>
-                        <th>Members count</th>
+                        <th>Admin</th>
+                        <th>Members Count</th>
                         <th>Creation</th>
                         <th>Option</th>
                     </tr>
@@ -72,4 +73,4 @@ const Teams = ({teams = [], remove, user}) => {
 }
 
 
-export default Teams;
+export default PublicGroups;

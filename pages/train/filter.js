@@ -122,6 +122,7 @@ class TrainFiltered extends Component {
                                     <label htmlFor="diff" className="col-4 col-form-label col-form-label-sm">Difficulty</label>
                                     <div className="col-8">
                                         <select id="diff" type="select" className="form-control form-control-sm" name="difficulty" onChange={this.handleInputChange} value={this.state.difficulty}>
+                                            <option value="" disabled>Select difficulty</option>
                                             <option value="easy">Easy</option>
                                             <option value="medium">Medium</option>
                                             <option value="hard">Hard</option>
