@@ -73,8 +73,6 @@ const Groups = ({groups=[], username, user, remove}) => {
         });
     }
 
-    
-
     return (
         <>
             <table className="table table-sm table-bordered table-striped table-responsive-sm table-hover">

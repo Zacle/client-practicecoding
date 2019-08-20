@@ -4,14 +4,13 @@ import Layout from '../main/layout';
 
 
 const ContestLayout = (props) => {
-    const {title, description, children } = props;
+    const {title, description, auth, deauthenticate, children } = props;
     return (
         <>
-            <Layout title={title} description={description} >
-                <br /><br />
-                <div className="container">
+            <Layout auth={auth} deauthenticate={deauthenticate} title={title} description={description} >
+                <div className="sub-nav container">
                     <div className="row justify-content-left ">
-                        <div className="col-12 text-left">
+                        <div className="links col-12 text-left">
                             <Link prefetch href="/contests/running"><a href="/contests/running">Running {' '}</a></Link>
                             <Link prefetch href="/contests/coming"><a href="/contests/coming">Coming{' '}</a></Link>
                             <Link prefetch href="/contests/past"><a href="/contests/past">Past{' '}</a></Link>

@@ -1,9 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-const ComingContests = ({contest}) => {
+const ComingContests = ({contest, user, remove}) => {
     let date = new Date(contest.startDate);
+    let canDelete = false;
+    if (user) {
+        canDelete = contest.owner.username === user.username;
+    }
     return (
         <>
             <tr className="text-center">
@@ -20,15 +25,21 @@ const ComingContests = ({contest}) => {
                     {contest.duration}
                 </td>
                 <td>
-                    <Link prefetch href="/contests/[id]/register" as={"/contests/" + contest._id + "/register"}><a href={"/contests/" + contest._id + "/register"}>Register</a></Link>
+                    {canDelete && (
+                        <button className="btn" onClick={() => remove(contest._id)}><span data-toggle="tooltip" data-placement="top" title="Delete this contest"><FontAwesomeIcon icon="trash-alt" /></span></button>
+                    )}
                 </td>
             </tr>
         </>
     );
 }
 
-const RunningContests = ({contest}) => {
+const RunningContests = ({contest, user, remove}) => {
     let date = new Date(contest.startDate);
+    let canDelete = false;
+    if (user) {
+        canDelete = contest.owner.username === user.username;
+    }
     return (
         <>
             <tr className="text-center">
@@ -45,18 +56,24 @@ const RunningContests = ({contest}) => {
                     {contest.duration}
                 </td>
                 <td>
-                    <Link prefetch href="/contests/[id]/register" as={"/contests/" + contest._id + "/register"}><a href={"/contests/" + contest._id + "/register"}>Register</a></Link>
+                    <Link prefetch href="/contests/[id]/standing" as={"/contests/" + contest._id + "/standing"}><a href={"/contests/" + contest._id + "/standing"}>Current Standing</a></Link>
                 </td>
                 <td>
-                    <Link prefetch href="/contests/[id]/standing" as={"/contests/" + contest._id + "/standing"}><a href={"/contests/" + contest._id + "/standing"}>Current Standing</a></Link>
+                    {canDelete && (
+                        <button className="btn" onClick={() => remove(contest._id)}><span data-toggle="tooltip" data-placement="top" title="Delete this contest"><FontAwesomeIcon icon="trash-alt" /></span></button>
+                    )}
                 </td>
             </tr>
         </>
     );
 }
 
-const PastContests = ({contest}) => {
+const PastContests = ({contest, user, remove}) => {
     let date = new Date(contest.startDate);
+    let canDelete = false;
+    if (user) {
+        canDelete = contest.owner.username === user.username;
+    }
     return (
         <>
             <tr className="text-center">
@@ -75,42 +92,35 @@ const PastContests = ({contest}) => {
                 <td>
                     <Link prefetch href="/contests/[id]/standing" as={"/contests/" + contest._id + "/standing"}><a href={"/contests/" + contest._id + "/standing"}>Final Standing</a></Link>
                 </td>
+                <td>
+                    {canDelete && (
+                        <button className="btn" onClick={() => remove(contest._id)}><span data-toggle="tooltip" data-placement="top" title="Delete this contest"><FontAwesomeIcon icon="trash-alt" /></span></button>
+                    )}
+                </td>
             </tr>
         </>
     );
 }
 
-/**
- * Display contests given the status (coming, running or past)
- * @param {status, contests} param0 
- */
-const MainContests = ({contests = [], status}) => {
-    if (contests.length === 0) {
-        return (
-            <>
-                <div className="row justify-content-center">
-                    No {status.toLowerCase()} contests currently.
-                </div>
-            </>
-        );
-    }
+const Contests = ({user, contests, status, remove}) => {
     if (status == "RUNNING") {
         const map = contests.map((contest, i) => {
             return (
-                <RunningContests key={i+1} contest={contest} />
+                <RunningContests user={user} remove={remove} key={i+1} contest={contest} />
             );
         });
         return (
             <>
-                <table className="table table-sm table-bordered table-striped table-responsive-sm table-hover">
+                <table className="cap table table-sm table-bordered table-striped table-responsive-sm table-hover">
+                    <caption className="cap text-center">Running Contests</caption>
                     <thead>
                         <tr className="text-center">
                             <th>Contest Name</th>
                             <th>Contest Owner</th>
                             <th>Start</th>
                             <th>Duration</th>
-                            <th>Registration</th>
                             <th>Standing</th>
+                            <th>Option</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -123,19 +133,20 @@ const MainContests = ({contests = [], status}) => {
     else if (status == "COMING") {
         const map = contests.map((contest, i) => {
             return (
-                <ComingContests key={i+1} contest={contest} />
+                <ComingContests user={user} remove={remove} key={i+1} contest={contest} />
             );
         });
         return (
             <>
-                <table className="table table-sm table-bordered table-striped table-responsive-sm table-hover">
+                <table className="cap table table-sm table-bordered table-striped table-responsive-sm table-hover">
+                    <caption className="cap text-center">Coming Contests</caption>
                     <thead>
                         <tr className="text-center">
                             <th>Contest Name</th>
                             <th>Contest Owner</th>
                             <th>Start</th>
                             <th>Duration</th>
-                            <th>Registration</th>
+                            <th>Option</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -148,12 +159,13 @@ const MainContests = ({contests = [], status}) => {
     else {
         const map = contests.map((contest, i) => {
             return (
-                <PastContests key={i+1} contest={contest} />
+                <PastContests user={user} remove={remove} key={i+1} contest={contest} />
             );
         });
         return (
             <>
-                <table className="table table-sm table-bordered table-striped table-responsive-sm table-hover">
+                <table className="cap table table-sm table-bordered table-striped table-responsive-sm table-hover">
+                    <caption className="cap text-center">Past contests</caption>
                     <thead>
                         <tr className="text-center">
                             <th>Contest Name</th>
@@ -161,6 +173,7 @@ const MainContests = ({contests = [], status}) => {
                             <th>Start</th>
                             <th>Duration</th>
                             <th>Standing</th>
+                            <th>Option</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -172,4 +185,36 @@ const MainContests = ({contests = [], status}) => {
     }
 }
 
-export default MainContests;
+/**
+ * Display contests given the status (coming, running or past)
+ * @param {status, contests} param0 
+ */
+const MyContests = ({username, user, contests = [], status, remove}) => {
+    if (contests.length === 0) {
+        return (
+            <>
+                <div className="row justify-content-center">
+                    No {status.toLowerCase()} contests currently.
+                </div>
+            </>
+        );
+    }
+    if (user && (user.username === username)) {
+        return (
+            <Contests user={user} contests={contests} status={status} remove={remove} />
+        );
+    }
+    else {
+        const publicContests = contests.filter(contest => contest.access !== 0);
+        if (publicContests.length === 0) {
+            return (
+                <></>
+            );
+        }
+        return (
+            <Contests user={user} contests={publicContests} status={status} remove={remove} />
+        );
+    }
+}
+
+export default MyContests;

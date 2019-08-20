@@ -80,7 +80,7 @@ class CreateGroup extends Component {
 
     render () {
         const errors = this.validate(this.state.name);
-        let error = errors.name !== '' || this.state.email === '';
+        let error = errors.name !== '' || this.state.name === '';
         return (
             <>
                 <GroupLayout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title="Create Group | Practice Coding OJ" description="Create a new group on Practice Coding OJ" >

@@ -122,3 +122,7 @@ table tr {
 .main-info {
   font-family: 'Bitter', serif;
 }
+
+.cap {
+  caption-side: top;
+}

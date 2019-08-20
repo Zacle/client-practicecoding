@@ -3,6 +3,7 @@ import React from 'react';
 const Option = ({index, number, start, end}) => {
     let array = [];
     if (start) {
+        index = start;
         for (let i = start; i <= end; i++) {
             array.push(i);
         }
@@ -22,7 +23,7 @@ const Option = ({index, number, start, end}) => {
             opt = num;
         }
         return (
-            <option key={i}>{opt}</option>
+            <option value={num} key={i+1}>{opt}</option>
         );
     });
 
