@@ -1,15 +1,23 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-const Submission = submission => {
+const Submission = ({submission, contest}) => {
     let date = new Date(submission.submissionTime);
+    let type = true;
+    if (contest.type === 2) {
+        type = false;
+    }
     return (
         <>
             <tr>
                 <td>{submission.submissionID}</td>
                 <td>
-                    <Link prefetch href="/profile/[username]" as={`/profile/${submission.user.username}`}><a href={`/profile/${submission.user.username}`}>{submission.user.username}</a></Link>
+                    {type && (
+                        <Link prefetch href="/profile/[username]" as={`/profile/${submission.user.username}`}><a href={`/profile/${submission.user.username}`}>{submission.user.username}</a></Link>
+                    )}
+                    {!type && (
+                        <Link prefetch href="/teams/[id]" as={`/teams/${submission.team._id}`}><a href={`/teams/${submission.team._id}`}>{submission.team.name}</a></Link>
+                    )}
                 </td>
                 <td><a href={submission.problemLink}>{submission.problemName}</a></td>
                 <td>{submission.OJ}</td>
@@ -21,9 +29,9 @@ const Submission = submission => {
     );
 }
 
-const Submissions = ({submissions = []}) => {
+const Submissions = ({contest}) => {
 
-    if (submissions.length === 0) {
+    if (contest.submissions.length === 0) {
         return (
             <>
                 <div className="row justify-content-center">
@@ -33,9 +41,9 @@ const Submissions = ({submissions = []}) => {
         );
     }
 
-    const map = submissions.map((submission, i) => {
+    const map = contest.submissions.map((submission, i) => {
         return (
-            <Submission key={i} submission={submission} />
+            <Submission key={i} submission={submission} contest={contest} />
         );
     });
 
@@ -43,7 +51,7 @@ const Submissions = ({submissions = []}) => {
         <>
             <table className="table table-sm table-bordered table-striped table-responsive-sm table-hover">
                 <thead>
-                    <tr>
+                    <tr className="text-center">
                         <th>ID</th>
                         <th>Contestant</th>
                         <th>Problem</th>

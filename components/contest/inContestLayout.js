@@ -5,14 +5,13 @@ import { useRouter } from 'next/router';
 
 
 const InContestLayout = (props) => {
-    const {title, id, description , children } = props;
+    const {title, id, description, auth, deauthenticate, children } = props;
     return (
         <>
-            <Layout title={title} description={description} >
-                <br /><br />
-                <div className="container">
+            <Layout auth={auth} deauthenticate={deauthenticate} title={title} description={description} >
+                <div className="sub-nav container">
                     <div className="row justify-content-left ">
-                        <div className="col-12 text-left">
+                        <div className="links col-12 text-left">
                             <Link prefetch href="/contests/[id]/problems" as={`/contests/${id}/problems`}><a href={`/contests/${id}/problems`}>Problems {' '}</a></Link>
                             <Link prefetch href="/contests/[id]/registrants" as={`/contests/${id}/registrants`}><a href={`/contests/${id}/registrants`}>Registrants{' '}</a></Link>
                             <Link prefetch href="/contests/[id]/submissions" as={`/contests/${id}/submissions`}><a href={`/contests/${id}/submissions`}>Submissions{' '}</a></Link>

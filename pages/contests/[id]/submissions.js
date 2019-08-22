@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import { withRouter } from 'next/router';
 import InContestLayout from '../../../components/contest/inContestLayout';
 import Submissions from '../../../components/contest/submissions';
+import {connect} from 'react-redux';
+import {deauthenticate} from '../../../redux/actions/authActions';
+import {fetchSubmissions} from '../../../redux/actions/contestActions';
+import init from '../../../utils/initialize';
+import Layout from '../../../components/main/layout';
+import Loading from '../../../components/loading';
+
 
 
 class ContestSubmissions extends Component {
@@ -12,22 +19,57 @@ class ContestSubmissions extends Component {
         this.id = props.router.query.id;
     }
 
-    render () {
-        const title = "Test Registrants | Practice Coding OJ";
-        const description = "Registrants for this contest";
+    static getInitialProps(ctx) {
+        init(ctx);
+    }
 
-        return (
-            <>
-                <br />
-                <InContestLayout id={this.id} title={title} description={description} >
-                    <br /><br />
-                    <div>
-                        <Submissions />
+    async componentDidMount() {
+        await this.props.fetchSubmissions(this.id);
+    }
+
+    render () {
+        if (this.props.contests.submissionsError) {
+            const title = "Practice Coding OJ";
+            return (
+                <Layout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title}>
+                    <div className="info container">
+                        <div className="error row justify-content-center">
+                            <p className="error">{this.props.contests.submissionsError}</p>
+                        </div>
                     </div>
-                </InContestLayout>
-            </>
-        );
+                </Layout>
+            );
+        }
+        else if (this.props.contests.submissions) {
+            const title = "Submissions | Practice Coding OJ";
+            const description = "Contest submissions";
+
+            return (
+                <>
+                    <InContestLayout auth={this.props.auth} deauthenticate={this.props.deauthenticate} id={this.id} title={title} description={description} >
+                        <br /><br />
+                        <div>
+                            <Submissions contest={this.props.contests.submissions} />
+                        </div>
+                    </InContestLayout>
+                </>
+            );
+        }
+        else {
+            return (
+                <Loading auth={this.props.auth} deauthenticate={this.props.deauthenticate} />
+            );
+        }
     }
 }
 
-export default withRouter(ContestSubmissions);
+const mapStateToProps = state => ({
+        auth: state.authentication,
+        contests: state.contests
+    }
+);
+
+export default withRouter(connect(
+    mapStateToProps,
+    {deauthenticate, fetchSubmissions}
+)(ContestSubmissions));

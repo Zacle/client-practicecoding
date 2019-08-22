@@ -12,7 +12,15 @@ import {
     FETCH_USER_PAST_CONTESTS,
     FETCH_USER_PAST_CONTESTS_FAILED,
     FETCH_USER_RUNNING_CONTESTS,
-    FETCH_USER_RUNNING_CONTESTS_FAILED
+    FETCH_USER_RUNNING_CONTESTS_FAILED,
+    FETCH_CONTEST, 
+    FETCH_CONTEST_FAILED,
+    UPDATE_CONTEST,
+    UPDATE_CONTEST_FAILED,
+    DELETE_CONTEST,
+    DELETE_CONTEST_FAILED,
+    FETCH_SUBMISSIONS,
+    FETCH_SUBMISSIONS_FAILED
 } from '../ActionTypes';
 import axios from 'axios';
 import { API } from '../../config';
@@ -363,6 +371,206 @@ export const fetchUSerPastContests = username => dispatch => {
                 }
                 else {
                     dispatch(saveUserPastContestFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+/**
+ * Get the contest and save to the redux store
+ * @param {*} contest 
+ */
+export const getContest = contest => {
+    return {
+        type: FETCH_CONTEST,
+        payload: contest
+    };
+}
+
+/**
+ * Failed to get the contest
+ * @param {*} err 
+ */
+export const getContestFailed = err => {
+    return {
+        type: FETCH_CONTEST_FAILED,
+        payload: err
+    };
+}
+
+/**
+ * Get the contest from the database
+ * @param {*} id 
+ */
+export const fetchContest = id => dispatch => {
+    return axios.get(`${API}/contests/${id}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(result => dispatch(getContest(result.data)))
+            .catch(err => {
+                if (err.response) {
+                    dispatch(getContestFailed(err.response.data));
+                }
+                else if (err.request) {
+                    dispatch(getContestFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(getContestFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+/**
+ * Edit contest info 
+ * @param {*} contest 
+ */
+export const editContest = contest => {
+    return {
+        type: UPDATE_CONTEST,
+        payload: contest
+    };
+}
+
+/**
+ * Failed to update contest info
+ * @param {*} err 
+ */
+export const editContestFailed = err => {
+    return {
+        type: UPDATE_CONTEST_FAILED,
+        payload: err
+    };
+}
+
+/**
+ * Update contest info in the database
+ * @param {*} id 
+ * @param {*} contest 
+ * @param {*} token 
+ */
+export const update = (id, contest, token) => dispatch => {
+    return axios.put(`${API}/contests/${id}`,
+            contest,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(result => dispatch(editContest(result.data)))
+            .catch(err => {
+                if (err.response) {
+                    dispatch(editContestFailed(err.response.data));
+                }
+                else if (err.request) {
+                    dispatch(editContestFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(editContestFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+/**
+ * Remove this contest from the redux store
+ * @param {*} contest 
+ */
+export const removeContest = contest => {
+    return {
+        type: DELETE_CONTEST,
+        payload: contest
+    };
+}
+
+/**
+ * Failed to remove this contest from the redux store
+ * @param {*} err 
+ */
+export const removeContestFailed = err => {
+    return {
+        type: DELETE_CONTEST_FAILED,
+        payload: err
+    };
+}
+
+/**
+ * Delete contest from the database
+ * @param {*} id 
+ * @param {*} token 
+ */
+export const deleContest = (id, token) => dispatch => {
+    return axios.delete(`${API}/contests/${id}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(result => {
+                dispatch(removeContest(result.data))
+            })
+            .catch(err => {
+                if (err.response) {
+                    alert(err.response.data);
+                }
+                else if (err.request) {
+                    alert(API_ERRORS.INTERNAL_SERVER_ERROR.message);
+                }
+                else {
+                    alert(API_ERRORS.GENERAL_ERROR.message);
+                }
+            });
+}
+
+/**
+ * Save contest submissions to the redux store
+ * @param {*} submissions 
+ */
+export const saveSubmissions = submissions => {
+    return {
+        type: FETCH_SUBMISSIONS,
+        payload: submissions
+    };
+}
+
+/**
+ * Failed to save contest submissions to the redux store
+ * @param {*} err 
+ */
+export const saveSubmissionsFailed = err => {
+    return {
+        type: FETCH_SUBMISSIONS_FAILED,
+        payload: err
+    };
+}
+
+/**
+ * Fetch contest submissions from the database
+ * @param {*} id 
+ */
+export const fetchSubmissions = id => dispatch => {
+    return axios.get(`${API}/contests/${id}/submissions`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(result => dispatch(saveSubmissions(result.data)))
+            .catch(err => {
+                if (err.response) {
+                    dispatch(saveSubmissionsFailed(err.response.data));
+                }
+                else if (err.request) {
+                    dispatch(saveSubmissionsFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(saveSubmissionsFailed(API_ERRORS.GENERAL_ERROR.message));
                 }
             });
 }

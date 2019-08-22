@@ -12,7 +12,14 @@ import {
     FETCH_USER_RUNNING_CONTESTS,
     FETCH_USER_RUNNING_CONTESTS_FAILED,
     FETCH_USER_PAST_CONTESTS,
-    FETCH_USER_PAST_CONTESTS_FAILED
+    FETCH_USER_PAST_CONTESTS_FAILED,
+    FETCH_CONTEST,
+    FETCH_CONTEST_FAILED,
+    UPDATE_CONTEST,
+    UPDATE_CONTEST_FAILED,
+    DELETE_CONTEST,
+    FETCH_SUBMISSIONS,
+    FETCH_SUBMISSIONS_FAILED
 } from '../ActionTypes';
 
 let initialState = {
@@ -27,7 +34,12 @@ let initialState = {
     userComingContests: null,
     userRunningContests: null,
     userPastContests: null,
-    userContestsError: null
+    userContestsError: null,
+    getContest: null,
+    getContestError: null,
+    updateError: null,
+    submissions: null,
+    submissionsError: null
 };
 
 export const contestsReducer = (state = initialState, action) => {
@@ -35,7 +47,7 @@ export const contestsReducer = (state = initialState, action) => {
         case ADD_CONTEST:
             return {...state, contest: action.payload};
         case ADD_CONTEST_FAILED:
-            return {...state, addContestError: action.payload, addContestError: null};
+            return {...state, addContestError: action.payload};
         case FETCH_COMING_CONTESTS:
             return {...state, comingContests: action.payload, comingError: null};
         case FETCH_COMING_CONTESTS_FAILED:
@@ -60,6 +72,35 @@ export const contestsReducer = (state = initialState, action) => {
             return {...state, userPastContests: action.payload};
         case FETCH_USER_PAST_CONTESTS_FAILED:
             return {...state, userContestsError: action.payload};
+        case FETCH_CONTEST:
+            return {...state, getContest: action.payload, getContestError: null};
+        case FETCH_CONTEST_FAILED:
+            return {...state, getContestError: action.payload};
+        case UPDATE_CONTEST:
+            return {...state, getContest: action.payload, updateError: null};
+        case UPDATE_CONTEST_FAILED:
+            return {...state, updateError: action.payload};
+        case DELETE_CONTEST:
+            let new_coming = null, new_running = null, new_past = null;  
+            if (state.userComingContests) {
+                new_coming = state.userComingContests.filter(contest => contest._id !== action.payload._id);
+            }
+            if (state.userRunningContests) {
+                new_running = state.userRunningContests.filter(contest => contest._id !== action.payload._id);
+            }
+            if (state.userPastContests) {
+                new_past = state.userPastContests.filter(contest => contest._id !== action.payload._id);
+            }
+            return {
+                ...state,
+                userComingContests: new_coming,
+                userRunningContests: new_running,
+                userPastContests: new_past
+            };
+        case FETCH_SUBMISSIONS:
+            return {...state, submissions: action.payload, submissionsError: null};
+        case FETCH_SUBMISSIONS_FAILED:
+            return {...state, submissionsError: action.payload};
         default:
             return state;
     }

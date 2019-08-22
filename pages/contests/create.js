@@ -28,7 +28,7 @@ class CreateContest extends Component {
             endTimeMinute: '',
             access: '',
             type: '',
-            submit: true,
+            submit: false,
             touched: {
                 name: false
             }
@@ -109,7 +109,7 @@ class CreateContest extends Component {
                                         {this.props.contests.addContestError}
                                     </UncontrolledAlert>
                                 )}
-                                {this.props.contests.contest &&
+                                {this.props.contests.contest && this.state.submit &&
                                 (
                                     <UncontrolledAlert className="text-center" color="success">
                                         Contest created

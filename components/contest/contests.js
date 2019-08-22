@@ -11,7 +11,7 @@ const ComingContests = ({contest}) => {
                     <Link prefetch href="/contests/[id]" as={"/contests/" + contest._id} ><a href={"/contests/" + contest._id}>{contest.name}</a></Link>
                 </td>
                 <td>
-                    <Link prefetch href="/profile/[username]" as={"/profile/" + contest.owner.username} ><a href={"profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
+                    <Link prefetch href="/profile/[username]" as={"/profile/" + contest.owner.username} ><a href={"/profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
                 </td>
                 <td>
                     {date.toLocaleString('en-GB')}
@@ -33,10 +33,10 @@ const RunningContests = ({contest}) => {
         <>
             <tr className="text-center">
                 <td>
-                    <Link prefetch href="/contests/[id]" as={"/contests/" + contest._id} ><a href={"contests/" + contest._id}>{contest.name}</a></Link>
+                    <Link prefetch href="/contests/[id]" as={"/contests/" + contest._id} ><a href={"/contests/" + contest._id}>{contest.name}</a></Link>
                 </td>
                 <td>
-                    <Link prefetch href="/profile/[username]" as={"/profile/" + contest.owner.username} ><a href={"profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
+                    <Link prefetch href="/profile/[username]" as={"/profile/" + contest.owner.username} ><a href={"/profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
                 </td>
                 <td>
                     {date.toLocaleString('en-GB')}
@@ -61,10 +61,10 @@ const PastContests = ({contest}) => {
         <>
             <tr className="text-center">
                 <td>
-                    <Link prefetch href="/contests/[id]" as={"/contests/" + contest._id} ><a href={"contests/" + contest._id}>{contest.name}</a></Link>
+                    <Link prefetch href="/contests/[id]" as={"/contests/" + contest._id} ><a href={"/contests/" + contest._id}>{contest.name}</a></Link>
                 </td>
                 <td>
-                    <Link prefetch href="/profile/[username]" as={"/profile/" + contest.owner.username} ><a href={"profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
+                    <Link prefetch href="/profile/[username]" as={"/profile/" + contest.owner.username} ><a href={"/profile/" + contest.owner.username}>{contest.owner.username}</a></Link>
                 </td>
                 <td>
                     {date.toLocaleString('en-GB')}
