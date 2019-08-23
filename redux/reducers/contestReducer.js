@@ -19,7 +19,11 @@ import {
     UPDATE_CONTEST_FAILED,
     DELETE_CONTEST,
     FETCH_SUBMISSIONS,
-    FETCH_SUBMISSIONS_FAILED
+    FETCH_SUBMISSIONS_FAILED,
+    FETCH_PROBLEMS,
+    FETCH_PROBLEMS_FAILED,
+    FETCH_CONTEST_REGISTRANTS,
+    FETCH_CONTEST_REGISTRANTS_FAILED
 } from '../ActionTypes';
 
 let initialState = {
@@ -39,7 +43,11 @@ let initialState = {
     getContestError: null,
     updateError: null,
     submissions: null,
-    submissionsError: null
+    submissionsError: null,
+    problems: null,
+    problemsError: null,
+    registrants: null,
+    registrantsError: null
 };
 
 export const contestsReducer = (state = initialState, action) => {
@@ -101,6 +109,14 @@ export const contestsReducer = (state = initialState, action) => {
             return {...state, submissions: action.payload, submissionsError: null};
         case FETCH_SUBMISSIONS_FAILED:
             return {...state, submissionsError: action.payload};
+        case FETCH_PROBLEMS:
+            return {...state, problems: action.payload, problemsError: null};
+        case FETCH_PROBLEMS_FAILED:
+            return {...state, problemsError: action.payload};
+        case FETCH_CONTEST_REGISTRANTS:
+            return {...state, registrants: action.payload, registrantsError: null};
+        case FETCH_CONTEST_REGISTRANTS_FAILED:
+            return {...state, registrantsError: action.payload};
         default:
             return state;
     }

@@ -20,7 +20,11 @@ import {
     DELETE_CONTEST,
     DELETE_CONTEST_FAILED,
     FETCH_SUBMISSIONS,
-    FETCH_SUBMISSIONS_FAILED
+    FETCH_SUBMISSIONS_FAILED,
+    FETCH_PROBLEMS,
+    FETCH_PROBLEMS_FAILED,
+    FETCH_CONTEST_REGISTRANTS,
+    FETCH_CONTEST_REGISTRANTS_FAILED
 } from '../ActionTypes';
 import axios from 'axios';
 import { API } from '../../config';
@@ -571,6 +575,102 @@ export const fetchSubmissions = id => dispatch => {
                 }
                 else {
                     dispatch(saveSubmissionsFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+/**
+ * Save contest problems to the redux store
+ * @param {*} problems 
+ */
+export const saveProblems = (problems) => {
+    return {
+        type: FETCH_PROBLEMS,
+        payload: problems
+    };
+}
+
+/**
+ * Failed to save contest problems
+ * @param {*} err 
+ */
+export const saveProblemsFailed = err => {
+    return {
+        type: FETCH_PROBLEMS_FAILED,
+        payload: err
+    };
+}
+
+/**
+ * Fetch contest problems from the database
+ * @param {*} id 
+ */
+export const fetchProblems = id => dispatch => {
+    return axios.get(`${API}/contests/${id}/problems`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(result => dispatch(saveProblems(result.data)))
+            .catch(err => {
+                if (err.response) {
+                    dispatch(saveProblemsFailed(err.response.data));
+                }
+                else if (err.request) {
+                    dispatch(saveProblemsFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(saveProblemsFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+/**
+ * Save contest registrants to the redux store
+ * @param {*} registrants 
+ */
+export const saveRegistrants = registrants => {
+    return {
+        type: FETCH_CONTEST_REGISTRANTS,
+        payload: registrants
+    };
+}
+
+/**
+ * Failed to save contest registrants
+ * @param {*} err 
+ */
+export const saveRegistrantsFailed = err => {
+    return {
+        type: FETCH_CONTEST_REGISTRANTS_FAILED,
+        payload: err
+    };
+}
+
+/**
+ * Fetch contest registrants from the database
+ * @param {*} id 
+ */
+export const fetchRegistrants = id => dispatch => {
+    return axios.get(`${API}/contests/${id}/registrants`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(result => dispatch(saveRegistrants(result.data)))
+            .catch(err => {
+                if (err.response) {
+                    dispatch(saveRegistrantsFailed(err.response.data));
+                }
+                else if (err.request) {
+                    dispatch(saveRegistrantsFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(saveRegistrantsFailed(API_ERRORS.GENERAL_ERROR.message));
                 }
             });
 }

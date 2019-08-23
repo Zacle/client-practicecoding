@@ -2,21 +2,27 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
-const Problem = problem => {
+const Problem = ({problem, user, remove, contest}) => {
+    let admin = false;
+    if (user) {
+        admin = contest.owner.username === user.username;
+    }
     return (
         <>
-            <tr>
-                <td><a href={problem.link}> {problem.link} </a></td>
+            <tr className="text-center">
+                <td><a href={problem.link} target="_blank"> {problem.name} </a></td>
                 <td>{problem.plateform}</td>
-                <td><FontAwesomeIcon icon="trash-alt" /></td>
+                <td>{admin && (
+                    <button className="btn" onClick={() => remove(problem._id)}><span data-toggle="tooltip" data-placement="top" title="Click to remove this problem"><FontAwesomeIcon icon="trash-alt" /></span></button>
+                )}</td>
             </tr>
         </>
     );
 }
 
-const Problems = ({problems = []}) => {
+const Problems = ({contest, user, remove}) => {
 
-    if (problems.length === 0) {
+    if (contest.problems.length === 0) {
         return (
             <>
                 <div className="row justify-content-center">
@@ -26,17 +32,17 @@ const Problems = ({problems = []}) => {
         );
     }
 
-    const map = problems.map((problem, i) => {
+    const map = contest.problems.map((problem, i) => {
         return (
-            <Problem key={i} problem={problem} />
+            <Problem key={i+1} problem={problem} contest={contest} user={user} remove={remove} />
         );
     });
 
     return (
         <>
-            <table className="table table-bordered table-striped table-responsive-sm table-hover">
-                <thead>
-                    <tr>
+            <table className="table table-sm table-bordered table-striped table-hover">
+                <thead className="thead-dark">
+                    <tr className="text-center">
                         <th>Name</th>
                         <th>Online Judge</th>
                         <th>Option</th>

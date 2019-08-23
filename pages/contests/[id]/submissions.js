@@ -47,8 +47,8 @@ class ContestSubmissions extends Component {
             return (
                 <>
                     <InContestLayout auth={this.props.auth} deauthenticate={this.props.deauthenticate} id={this.id} title={title} description={description} >
-                        <br /><br />
-                        <div>
+                        <br />
+                        <div className="container">
                             <Submissions contest={this.props.contests.submissions} />
                         </div>
                     </InContestLayout>

@@ -50,7 +50,7 @@ const Submissions = ({contest}) => {
     return (
         <>
             <table className="table table-sm table-bordered table-striped table-responsive-sm table-hover">
-                <thead>
+                <thead className="thead-dark">
                     <tr className="text-center">
                         <th>ID</th>
                         <th>Contestant</th>
