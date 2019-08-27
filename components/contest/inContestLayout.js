@@ -5,7 +5,11 @@ import { useRouter } from 'next/router';
 
 
 const InContestLayout = (props) => {
-    const {title, id, description, auth, deauthenticate, children } = props;
+    const {title, id, description, auth, contest, deauthenticate, children } = props;
+    let isAdmin = false;
+    if (contest && auth.user) {
+        isAdmin = contest.owner.username === auth.user.username;
+    }
     return (
         <>
             <Layout auth={auth} deauthenticate={deauthenticate} title={title} description={description} >
@@ -17,7 +21,7 @@ const InContestLayout = (props) => {
                             <Link prefetch href="/contests/[id]/submissions" as={`/contests/${id}/submissions`}><a href={`/contests/${id}/submissions`}>Submissions{' '}</a></Link>
                             <Link prefetch href="/contests/[id]/standing" as={`/contests/${id}/standing`}><a href={`/contests/${id}/standing`}>Standing{' '}</a></Link>
                             <Link prefetch href="/contests/[id]/register" as={`/contests/${id}/register`}><a href={`/contests/${id}/register`}>Register{' '}</a></Link>
-                            <Link prefetch href="/contests/[id]/edit" as={`/contests/${id}/edit`}><a href={`/contests/${id}/edit`}>Edit{' '}</a></Link>
+                            {isAdmin && (<Link prefetch href="/contests/[id]/edit" as={`/contests/${id}/edit`}><a href={`/contests/${id}/edit`}>Edit{' '}</a></Link>)}
                         </div>
                     </div>
                 </div>

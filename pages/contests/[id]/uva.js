@@ -4,12 +4,15 @@ import InContestLayout from '../../../components/contest/inContestLayout';
 import {connect} from 'react-redux';
 import {deauthenticate} from '../../../redux/actions/authActions';
 import init from '../../../utils/initialize';
-import {fetchContest, addExistingContest} from '../../../redux/actions/contestActions';
+import {fetchContest, addUvaContest} from '../../../redux/actions/contestActions';
+import {API} from '../../../config';
+import axios from 'axios';
+import {UvaOption} from '../../../components/contest/options';
 import Layout from '../../../components/main/layout';
 import Loading from '../../../components/loading';
 
 
-class AddExistingContest extends Component {
+class UvaContest extends Component {
 
     constructor(props) {
         super(props);
@@ -39,12 +42,30 @@ class AddExistingContest extends Component {
 
     static async getInitialProps(ctx) {
         init(ctx, true);
+        let contestList = [];
+        try {
+            const list = await axios.get("https://uhunt.onlinejudge.org/api/contests");
+            contestList = list.data;
+        }
+        catch (err) {
+            contestList = [];
+        }
+        return { contestList };
     }
 
     async handleSubmit(e) {
         e.preventDefault();
         if (this.state.id !== '') {
-            await addExistingContest(this.id, this.state.id, this.props.auth.token);
+            let problems = [];
+            const list = this.props.contestList;
+            for (let i = 0; i < list.length; i++) {
+                const contest = list[i];
+                if (contest.id == this.state.id) {
+                    problems = contest.problems;
+                    break;
+                }
+            }
+            await addUvaContest(this.id, problems, this.props.auth.token);
         }
     }
 
@@ -62,7 +83,7 @@ class AddExistingContest extends Component {
             );
         }
         else if (this.props.contests.getContest) {
-            const title="Add problems from an existing contest | Practice Coding OJ";
+            const title="Add problems from uva contest | Practice Coding OJ";
         
             return (
                 <>
@@ -70,37 +91,25 @@ class AddExistingContest extends Component {
                         <br /><br />
                         <div className="container">
                             <div className="row justify-content-center">
-                                <div className="offset-md-3 col-md-7 offset-2">
+                                <div className="offset-md-3 col-md-7 offset-1">
                                     <form onSubmit={this.handleSubmit} noValidate>
-                                        <div className="row form-group">
-                                            <label htmlFor="team" className="col-3 col-form-label col-form-label-sm">Contest ID</label>
+                                        <div className="form-group row">
+                                            <label htmlFor="oj" className="col-4 col-form-label col-form-label-sm">Contest name</label>
                                             <div className="col-8 col-md-5">
-                                                <input type="text" className="form-control form-control-sm" name="id" id="team" placeholder="Contest ID" onChange={this.handleInputChange} value={this.state.id} />
+                                                <select id="oj" type="select" className="form-control form-control-sm" name="id" onChange={this.handleInputChange} value={this.state.id}>
+                                                    <option value="" disabled>Select contest name</option>
+                                                    <UvaOption options={this.props.contestList} />
+                                                </select>
                                             </div>
                                         </div>
                                         <div className="form-group row">
-                                            <div className="col-3"></div>
-                                            <div className="col-8 col-md-4">
-                                                <button type="submit" className="btn btn-primary col-8 col-md-5">Add</button>
+                                            <div className="col-4"></div>
+                                            <div className="col-8">
+                                                <button type="submit" className="btn btn-primary">Add</button>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
-                            </div>
-                        </div>
-                        <br /><br />
-                        <div className="container">
-                            <div className="row justify-content-center">
-                                <p>How to get Contest ID? </p>
-                            </div>
-                            <div className="row justify-content-center">
-                                <p>Head over to the contest where you want to copy problems from. </p>
-                            </div>
-                            <div className="row justify-content-center">
-                                <p>From the browser copy the id, It comes after contests</p><br />
-                            </div>
-                            <div className="row justify-content-center">
-                                <p>E.g contests/123456abcd, then 123456abcd is the contest ID</p>
                             </div>
                         </div>
                     </InContestLayout>
@@ -124,4 +133,4 @@ const mapStateToProps = state => ({
 export default withRouter(connect(
     mapStateToProps,
     {deauthenticate, fetchContest}
-)(AddExistingContest));
+)(UvaContest));

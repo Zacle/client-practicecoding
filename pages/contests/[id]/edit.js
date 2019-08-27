@@ -110,7 +110,7 @@ class EditContest extends Component {
         else if (this.props.contests.getContest) {
             return (
                 <>
-                    <InContestLayout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title="Edit Contest | Practice Coding OJ" description="Create a new contest on Practice Coding OJ" >
+                    <InContestLayout contest={this.props.contests.getContest} auth={this.props.auth} deauthenticate={this.props.deauthenticate} title="Edit Contest | Practice Coding OJ" description="Create a new contest on Practice Coding OJ" id={this.id} >
                         <div className="container">
                             <div className="row">
                                 <div className="col-12">
@@ -238,7 +238,7 @@ class EditContest extends Component {
                             <br />
                             <div className="row justify-content-center">
                                 <div className="text-center col-12 col-md-4">
-                                    <Link prefetch href="/contests/[id]/uva" as={"/contests/" + this.id + "/uva"}><button className="btn btn-primary">Add problems from Uva/Uhunt contest</button></Link>
+                                    <Link prefetch href="/contests/[id]/uva" as={"/contests/" + this.id + "/uva"}><button className="btn btn-primary">Add problems from Uva contest</button></Link>
                                 </div>
                             </div>
                         </div>

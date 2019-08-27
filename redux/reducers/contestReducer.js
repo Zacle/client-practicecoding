@@ -23,7 +23,12 @@ import {
     FETCH_PROBLEMS,
     FETCH_PROBLEMS_FAILED,
     FETCH_CONTEST_REGISTRANTS,
-    FETCH_CONTEST_REGISTRANTS_FAILED
+    FETCH_CONTEST_REGISTRANTS_FAILED,
+    FETCH_CONTEST_STANDING,
+    FETCH_CONTEST_STANDING_FAILED,
+    DELETE_PROBLEM,
+    DELETE_CONTEST_USER,
+    DELETE_CONTEST_TEAM
 } from '../ActionTypes';
 
 let initialState = {
@@ -47,7 +52,9 @@ let initialState = {
     problems: null,
     problemsError: null,
     registrants: null,
-    registrantsError: null
+    registrantsError: null,
+    standing: null,
+    standingError: null
 };
 
 export const contestsReducer = (state = initialState, action) => {
@@ -117,7 +124,57 @@ export const contestsReducer = (state = initialState, action) => {
             return {...state, registrants: action.payload, registrantsError: null};
         case FETCH_CONTEST_REGISTRANTS_FAILED:
             return {...state, registrantsError: action.payload};
+        case FETCH_CONTEST_STANDING:
+            let result = action.payload;
+            result.standing.trackers.sort(sortStanding);
+            return {
+                ...state,
+                standing: result,
+                standingError: null
+            };
+        case FETCH_CONTEST_STANDING_FAILED:
+            return {...state, standingError: action.payload};
+        case DELETE_PROBLEM:
+            const problems = state.problems;
+            problems.problems = problems.problems.filter(problem => problem._id !== action.payload);
+            return {
+                ...state,
+                problems: problems
+            };
+        case DELETE_CONTEST_USER:
+            const registrants = state.registrants;
+            if (registrants.type == 2) {
+                registrants.teams = registrants.teams.filter(team => team._id !== action.payload);
+            }
+            else {
+                registrants.users = registrants.users.filter(user => user._id !== action.payload);
+            }
+            return {
+                ...state,
+                registrants: registrants
+            };
+        case DELETE_CONTEST_TEAM:
+            const registrant = state.registrants;
+            if (registrant.type == 2) {
+                registrant.teams = registrant.teams.filter(team => team._id !== action.payload);
+            }
+            else {
+                registrant.users = registrant.users.filter(user => user._id !== action.payload);
+            }
+            return {
+                ...state,
+                registrants: registrant
+            };
         default:
             return state;
+    }
+}
+
+const sortStanding = (a, b) => {
+    if (b.solvedCount !== a.solvedCount) {
+        return b.solvedCount - a.solvedCount;
+    }
+    else if (b.solvedCount === a.solvedCount) {
+        return a.penalty - b.penalty;
     }
 }

@@ -40,18 +40,20 @@ const Problems = ({contest, user, remove}) => {
 
     return (
         <>
-            <table className="table table-sm table-bordered table-striped table-hover">
-                <thead className="thead-dark">
-                    <tr className="text-center">
-                        <th>Name</th>
-                        <th>Online Judge</th>
-                        <th>Option</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {map}
-                </tbody>
-            </table>
+            <div className="table-responsive-md">
+                <table className="table table-sm table-bordered table-striped table-hover table-fixed">
+                    <thead className="thead-dark">
+                        <tr className="text-center">
+                            <th>Name</th>
+                            <th>Online Judge</th>
+                            <th>Option</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {map}
+                    </tbody>
+                </table>
+            </div>
         </>
     );
 }

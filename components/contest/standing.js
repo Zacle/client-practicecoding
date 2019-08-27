@@ -6,105 +6,119 @@ const Problem = ({problem, i}) => {
     
     return (
         <>
-            <th scope="col"><a href={problem.link}> {"P"+(i+1)} </a></th>
+            <th scope="col"><a href={problem.link} target="_blank" title={problem.name + ` (${problem.plateform})`}> {"P"+(i+1)} </a></th>
         </>
     );
 }
 
-const Standing = ({problems = [], standing, index}) => {
-    let color = "white";
-    let data = "";
+const Standing = ({problems = [], tracker, index, standing}) => {
+    if (standing.contestID.type === 2) {
+        return (
+            <StandingTeam key={index} problems={problems} tracker={tracker} index={index} />
+        );
+    }
+    else {
+        return (
+            <StandingUser key={index} problems={problems} tracker={tracker} index={index} />
+        );
+    }
+}
+
+const StandingUser = ({problems = [], tracker, index}) => {
+    
     
     const map = problems.map((problem, i) => {
-        if (standing.unsolved[i] != 0) {
-            data = standing.unsolved[i] + "";
+        let color = "white";
+        let data = "";
+        if (tracker.unSolved[i] != 0) {
+            data = tracker.unSolved[i];
             color = "red";
         }
-        if (standing.solved[i] != 0) {
-            color = "green";
+        if (tracker.solved[i] != 0) {
+            color = "lightgreen";
+        }
+        return (
+            <td key={i+1} style={{backgroundColor: color}}>{data}</td>
+        );
+    });
+
+    return (
+        <tr key={index} className="text-center">
+            <td scope="row">{index}</td>
+            <td>
+                <Link prefetch href="/profile/[username]" as={"/profile/" + tracker.contestant.username} ><a href={"/profile/" + tracker.contestant.username}>{tracker.contestant.username}</a></Link>
+            </td>
+            <td>{tracker.solvedCount}</td>
+            <td>{tracker.penalty}</td>
+            {map}
+        </tr>
+    );
+}
+
+const StandingTeam = ({problems = [], tracker, index}) => {
+    
+    const map = problems.map((problem, i) => {
+        let color = "white";
+        let data = "";
+        if (tracker.unSolved[i] != 0) {
+            data = tracker.unSolved[i];
+            color = "red";
+        }
+        if (tracker.solved[i] != 0) {
+            color = "lightgreen";
         }
         return (
             <>
-                <td key={i} style={{color: color}}>{data}</td>
+                <td key={i+1} style={{backgroundColor: color}}>{data}</td>
             </>
         );
     });
 
     return (
-        <>
+        <tr key={index} className="text-center">
             <td scope="row">{index}</td>
             <td>
-                <Link prefetch href="/profile/[username]" as={"/profile/" + standing.contestant.username} ><a href={"/profile/" + standing.contestant.username}>{standing.contestant.username}</a></Link>
+                <Link prefetch href="/teams/[id]" as={"/teams/" + tracker.contestants._id} ><a href={"/teams/" + tracker.contestants._id}>{tracker.contestants.name}</a></Link>
             </td>
-            <td>{standing.solvedCount}</td>
-            <td>{standing.penalty}</td>
+            <td>{tracker.solvedCount}</td>
+            <td>{tracker.penalty}</td>
             {map}
-        </>
+        </tr>
     );
 }
 
-const StandingTeam = ({problems = [], standing, index}) => {
-    let color = "white";
-    let data = "";
-    
-    const map = problems.map((problem, i) => {
-        if (standing.unsolved[i] != 0) {
-            data = standing.unsolved[i] + "";
-            color = "red";
-        }
-        if (standing.solved[i] != 0) {
-            color = "green";
-        }
-        return (
-            <>
-                <td key={i} style={{color: color}}>{data}</td>
-            </>
-        );
-    });
-
-    return (
-        <>
-            <td scope="row">{index}</td>
-            <td>
-                <Link prefetch href="/teams/[id]" as={"/profile/" + standing.contestants._id} ><a href={"/profile/" + standing.contestants._id}>{standing.contestants.name}</a></Link>
-            </td>
-            <td>{standing.solvedCount}</td>
-            <td>{standing.penalty}</td>
-            {map}
-        </>
-    );
-}
-
-const Standings = ({problems = [], standings = []}) => {
+const Standings = ({problems = [], standing}) => {
 
     const mp = problems.map((problem, i) => {
         return (
-            <Problem key={i} problem={problem} i={i} />
+            <Problem key={i+1} problem={problem} i={i} />
         );
     });
 
-    const ms = standings.map((standing, i) => {
+    const ms = standing.trackers.map((tracker, i) => {
         return (
-            <Standing index={i+1} key={i} problems={problems} standing={standing} />
+            <Standing key={i+1} standing={standing} index={i+1} problems={problems} tracker={tracker} />
         );
     });
 
     return (
         <>
-            <table lassName="table table-sm table-bordered table-striped table-responsive-sm table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Rank</th>
-                        <th scope="col">Contestant</th>
-                        <th scope="col">Solved</th>
-                        <th scope="col">Penalty</th>
-                        {mp}
-                    </tr>
-                </thead>
-                <tbody>
-                    {ms}
-                </tbody>
-            </table>
+            <div className="table-responsive">
+                <table className="table table-sm table-bordered table-striped table-hover table-fixed">
+                    <thead className="thead-dark">
+                        <tr className="text-center">
+                            <th scope="col">Rank</th>
+                            <th scope="col">Contestant</th>
+                            <th scope="col">Solved</th>
+                            <th scope="col">Penalty</th>
+                            {mp}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {ms}
+                    </tbody>
+                </table>
+            </div>
         </>
     );
 }

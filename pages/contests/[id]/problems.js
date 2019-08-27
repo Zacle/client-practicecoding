@@ -4,7 +4,7 @@ import InContestLayout from '../../../components/contest/inContestLayout';
 import Problems from '../../../components/contest/problems';
 import {connect} from 'react-redux';
 import {deauthenticate} from '../../../redux/actions/authActions';
-import {fetchProblems} from '../../../redux/actions/contestActions';
+import {fetchProblems, deleteProblem} from '../../../redux/actions/contestActions';
 import init from '../../../utils/initialize';
 import Layout from '../../../components/main/layout';
 import Loading from '../../../components/loading';
@@ -29,7 +29,7 @@ class ContestProblems extends Component {
     }
 
     async delete(id) {
-
+        await this.props.deleteProblem(this.id, id, this.props.auth.token);
     }
 
     render () {
@@ -51,7 +51,7 @@ class ContestProblems extends Component {
 
             return (
                 <>
-                    <InContestLayout auth={this.props.auth} deauthenticate={this.props.deauthenticate} id={this.id} title={title} description={description} >
+                    <InContestLayout contest={this.props.contests.problems} auth={this.props.auth} deauthenticate={this.props.deauthenticate} id={this.id} title={title} description={description} >
                         <br />
                         <div className="container">
                             <Problems contest={this.props.contests.problems} user={this.props.auth.user} remove={this.delete} />
@@ -76,5 +76,5 @@ const mapStateToProps = state => ({
 
 export default withRouter(connect(
     mapStateToProps,
-    {deauthenticate, fetchProblems}
+    {deauthenticate, fetchProblems, deleteProblem}
 )(ContestProblems));

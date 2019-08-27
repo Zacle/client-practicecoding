@@ -46,7 +46,7 @@ class Home extends Component {
 
             return (
                 <>
-                    <InContestLayout auth={this.props.auth} deauthenticate={this.props.deauthenticate} id={this.id} title={title} description={description}>
+                    <InContestLayout contest={this.props.contests.getContest} auth={this.props.auth} deauthenticate={this.props.deauthenticate} id={this.id} title={title} description={description}>
                         <br /><br />
                         <div className="container">
                             <table className="table table-sm table-bordered table-striped table-responsive-sm table-hover">

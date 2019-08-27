@@ -86,10 +86,10 @@ class UserTeams extends Component {
                         (<div className="container">
                             <div className="row justify-content-center">
                                 <div className="offset-md-3 col-md-7 offset-2">
-                                    {this.props.teams.error &&
+                                    {this.props.teams.addError && this.state.submit &&
                                     (
                                         <UncontrolledAlert color="danger">
-                                            {this.props.teams.error}
+                                            {this.props.teams.addError}
                                         </UncontrolledAlert>
                                     )}
                                     <Form onSubmit={this.handleSubmit} noValidate>

@@ -85,7 +85,7 @@ const TeamRegistrants = ({contest, user, remove}) => {
 
     return (
         <>
-            <table className="table table-sm table-bordered table-striped table-responsive-sm table-hover">
+            <table className="table table-sm table-bordered table-striped table-hover">
                 <thead className="thead-dark">
                     <tr className="text-center">
                         <th>Team</th>

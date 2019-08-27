@@ -4,7 +4,7 @@ import InContestLayout from '../../../components/contest/inContestLayout';
 import Registrants from '../../../components/contest/registrants';
 import {connect} from 'react-redux';
 import {deauthenticate} from '../../../redux/actions/authActions';
-import {fetchRegistrants} from '../../../redux/actions/contestActions';
+import {fetchRegistrants, deleteUser, deleteTeam} from '../../../redux/actions/contestActions';
 import init from '../../../utils/initialize';
 import Layout from '../../../components/main/layout';
 import Loading from '../../../components/loading';
@@ -28,7 +28,12 @@ class ContestRegistrants extends Component {
     }
 
     async delete(id) {
-
+        if (this.props.contests.registrants.type === 1) {
+            await this.props.deleteUser(this.id, id, this.props.auth.token);
+        }
+        else if (this.props.contests.registrants.type === 2) {
+            await this.props.deleteTeam(this.id, id, this.props.auth.token);
+        }
     }
 
     render () {
@@ -50,7 +55,7 @@ class ContestRegistrants extends Component {
 
             return (
                 <>
-                    <InContestLayout auth={this.props.auth} deauthenticate={this.props.deauthenticate} id={this.id} title={title} description={description} >
+                    <InContestLayout contest={this.props.contests.registrants} auth={this.props.auth} deauthenticate={this.props.deauthenticate} id={this.id} title={title} description={description} >
                         <br />
                         <div className="container">
                             <Registrants contest={this.props.contests.registrants} user={this.props.auth.user} remove={this.delete} />
@@ -75,5 +80,5 @@ const mapStateToProps = state => ({
 
 export default withRouter(connect(
     mapStateToProps,
-    {deauthenticate, fetchRegistrants}
+    {deauthenticate, fetchRegistrants, deleteUser, deleteTeam}
 )(ContestRegistrants));

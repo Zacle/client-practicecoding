@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Link from 'next/link';
 
 const Submission = ({submission, contest}) => {
     let date = new Date(submission.submissionTime);
@@ -9,7 +9,7 @@ const Submission = ({submission, contest}) => {
     }
     return (
         <>
-            <tr>
+            <tr className="text-center">
                 <td>{submission.submissionID}</td>
                 <td>
                     {type && (

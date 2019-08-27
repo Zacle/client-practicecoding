@@ -54,7 +54,6 @@ export const login = user => dispatch => {
                 }
             })
             .then((response) => {
-                console.log("DATA: ", response.data);
                 let auth = {
                     token: response.data.token,
                     isLoggedIn: true,
