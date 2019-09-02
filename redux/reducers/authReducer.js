@@ -2,7 +2,9 @@ import {AUTHENTICATE,
     DEAUTHENTICATE, 
     AUTHENTICATION_FAILED,
     FORGOT_PASSWORD_FAILED,
-    RESET_PASSWORD_FAILED
+    RESET_PASSWORD_FAILED,
+    REGISTER,
+    REGISTER_FAILED
 } from '../ActionTypes';
 import { getCookie } from '../../utils/cookie';
 
@@ -28,7 +30,9 @@ if (typeof localStorage !== "undefined") {
         errMsg: null,
         user: null,
         forgot: null,
-        reset: null
+        reset: null,
+        register: null,
+        registerFailed: null
     };
 }
 
@@ -49,6 +53,10 @@ export const authReducer = (state = initialState, action) => {
             return {...state, forgot: action.payload};
         case RESET_PASSWORD_FAILED:
             return {...state, reset: action.payload};
+        case REGISTER:
+                return {...state, register: action.payload};
+        case REGISTER_FAILED:
+                return {...state, registerFailed: action.payload};
         default:
             return state;
     }

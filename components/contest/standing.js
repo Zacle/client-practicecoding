@@ -101,8 +101,17 @@ const Standings = ({problems = [], standing}) => {
         );
     });
 
+    let message = "Automatic update occur every 3 minutes";
+
+    if (standing.contestID.type === 2) {
+        message = "Automatic update occur every 5 minutes";
+    }
+
     return (
         <>
+            <div className="card-text row justify-content-center">
+                {message}
+            </div>
             <div className="table-responsive">
                 <table className="table table-sm table-bordered table-striped table-hover table-fixed">
                     <thead className="thead-dark">

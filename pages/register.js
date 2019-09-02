@@ -35,7 +35,8 @@ class Register extends Component {
                 confirmation: false
             },
             options: this.options,
-            visible: true
+            visible: true,
+            submit: false
         };
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -59,9 +60,6 @@ class Register extends Component {
         if (this.state.touched.username) {
             if (this.state.username.length < 3) {
                 errors.username = "Username length must be greater than 2";
-            }
-            else if (this.state.username.length > 10) {
-                errors.username = "Username length must be less than 11";
             }
         }
         if (this.state.touched.password) {
@@ -104,14 +102,14 @@ class Register extends Component {
         });
     }
 
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
         const user = {
             email: this.state.email,
             password: this.state.password,
             username: this.state.username,
             fullname: this.state.fullname,
-            country: this.state.country
+            country: this.state.country || 'Afghanistan'
         }
         this.props.register(user);
         
@@ -139,11 +137,19 @@ class Register extends Component {
                                 <img src="../static/images/face.png" />
                             </div>
                             <div className="col-12 form-input">
-                                {this.props.user.errMsg &&
+                                {this.props.user.registerFailed &&
                                 (
                                     <div>
                                         <Alert color="danger">
-                                            {this.props.user.errMsg}
+                                            {this.props.user.registerFailed}
+                                        </Alert>
+                                    </div>
+                                )}
+                                {this.props.user.register &&
+                                (
+                                    <div>
+                                        <Alert color="success">
+                                            {this.props.user.register}
                                         </Alert>
                                     </div>
                                 )}
@@ -244,6 +250,7 @@ class Register extends Component {
                                                 <div className="input-group-text"><FontAwesomeIcon icon="globe" /></div>
                                             </div>
                                             <select type="select" className="form-control" name="country" onChange={this.handleInputChange}>
+                                                <option value="" disabled>Select Country</option>
                                                 <Option options={this.state.options} />
                                             </select>
                                         </div>
@@ -255,12 +262,12 @@ class Register extends Component {
                             <div className="col-12 forgot">
                                 <span style={{color: "white"}}>Already have an account?</span> <Link prefetch href="/login" ><a href="/login">Login</a></Link>
                             </div>
-                            <div className="col-12">
+                            {/* <div className="col-12">
                                 <p style={{color: "white"}}>Or</p>
                                 <FacebookLoginButton >Register with Facebook</FacebookLoginButton>
                                 <GithubLoginButton >Register with GitHub</GithubLoginButton>
                                 <LinkedInLoginButton >Register with LinkedIn</LinkedInLoginButton>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

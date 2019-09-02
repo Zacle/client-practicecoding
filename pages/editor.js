@@ -7,6 +7,9 @@ import {deauthenticate} from '../redux/actions/authActions';
 import {IsomorphicEditor} from '../components/editor';
 import { Form, TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
+import EditorLayout from '../components/editor/editorLayout';
+import Loading from '../components/loading';
+import {postCode} from '../redux/actions/editorActions';
 
 
 class Editor extends Component {
@@ -19,11 +22,14 @@ class Editor extends Component {
             theme: 'ambiance',
             activeTab: '1',
             input: '',
-            output: ''
+            output: '',
+            name: '',
+            source: ''
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.toggle = this.toggle.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
     }
 
     static getInitialProps(ctx) {
@@ -38,9 +44,23 @@ class Editor extends Component {
         }
     }
 
+    onChange(value) {
+        console.log("VALUE: ", value);
+        this.setState({
+            source: value
+        });
+    }
+
     async handleSubmit(e) {
         e.preventDefault();
-        this.toggle('2');
+        const data = {
+            language: this.state.language,
+            theme: this.state.theme,
+            name: this.state.name,
+            source: this.state.source
+        };
+        console.log("DATA: ", data);
+        await postCode(data, this.props.auth.token);
     }
 
     async handleInputChange(event) {
@@ -59,12 +79,11 @@ class Editor extends Component {
 
         return (
             <>
-                <Layout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title} description={description} >
-                    <br/><br />
+                <EditorLayout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title} description={description} >
                     <div className="container">
                         <br />
                         <div className="row">
-                            <div className="col-md-6">
+                            <div className="col-md-7">
                                 <div className="row justify-content-center">
                                     <div className="col-3">
                                         <select className="form-control form-control-sm" name="language" onChange={this.handleInputChange} value={this.state.language} >
@@ -95,9 +114,9 @@ class Editor extends Component {
                                     </div>
                                 </div>
                                 <br />
-                                <IsomorphicEditor mode={this.state.language} theme={this.state.theme} style={{width: "100%", fontSize: "14px"}} />
+                                <IsomorphicEditor onChange={this.onChange} mode={this.state.language} theme={this.state.theme} style={{width: "100%", fontSize: "14px"}} source={this.state.source} />
                             </div>
-                            <div className="ml-1 col-md-5">
+                            <div className="col-md-5">
                                 <div className="row justify-content-center">
                                     <div className="col-3">
                                     </div>
@@ -105,50 +124,20 @@ class Editor extends Component {
                                     </div>
                                 </div>
                                 <br /><br />
-                                <div>
-                                    <Nav tabs>
-                                        <NavItem>
-                                            <NavLink
-                                            className={classnames({ active: this.state.activeTab === '1' })}
-                                            onClick={() => { this.toggle('1'); }}
-                                            >
-                                            Input
-                                            </NavLink>
-                                        </NavItem>
-                                        <NavItem>
-                                            <NavLink
-                                            className={classnames({ active: this.state.activeTab === '2' })}
-                                            onClick={() => { this.toggle('2'); }}
-                                            >
-                                            Output
-                                            </NavLink>
-                                        </NavItem>
-                                    </Nav>
-                                    <TabContent activeTab={this.state.activeTab}>
-                                        <TabPane tabId="1">
-                                            <Row>
-                                                <Col sm="12">
-                                                    <form onSubmit={this.handleSubmit} noValidate>
-                                                        <textarea value={this.state.input} onChange={this.handleInputChange} id="cdes" className="form-control form-control-sm" rows="7" name="input" ></textarea>
-                                                        <br />
-                                                        <button type="submit" className="btn btn-success">Compile and Run</button>
-                                                    </form>
-                                                </Col>
-                                            </Row>
-                                        </TabPane>
-                                        <TabPane tabId="2">
-                                            <Row>
-                                                <Col sm="12">
-                                                <textarea value={this.state.output} onChange={this.handleInputChange} className="form-control form-control-sm" rows="7" name="output" disabled></textarea>
-                                                </Col>
-                                            </Row>
-                                        </TabPane>
-                                    </TabContent>
+                                <div className="row justify-content-center">
+                                    <form onSubmit={this.handleSubmit} noValidate>
+                                        <div className="form-group row">
+                                            <input name="name" className="form-control form-control-sm" type="text" value={this.state.name} onChange={this.handleInputChange} placeholder="Enter name" />
+                                        </div>
+                                        <div className="form-group row">
+                                            <button className="btn btn-primary" type="submit" >Save</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </Layout>
+                </EditorLayout>
             </>
         );
     }

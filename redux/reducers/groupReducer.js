@@ -15,7 +15,15 @@ import {
     ADD_USER_TO_GROUP,
     ADD_USER_TO_GROUP_FAILED,
     REMOVE_USER_FROM_GROUP,
-    REMOVE_USER_FROM_GROUP_FAILED
+    REMOVE_USER_FROM_GROUP_FAILED,
+    FETCH_GROUP_COMING_CONTESTS,
+    FETCH_GROUP_COMING_CONTESTS_FAILED,
+    FETCH_GROUP_PAST_CONTESTS,
+    FETCH_GROUP_PAST_CONTESTS_FAILED,
+    FETCH_GROUP_RUNNING_CONTESTS,
+    FETCH_GROUP_RUNNING_CONTESTS_FAILED,
+    DELETE_CONTEST,
+    DELETE_CONTEST_FAILED
 } from '../ActionTypes';
 
 let initialState = {
@@ -29,7 +37,11 @@ let initialState = {
     updateError: null,
     groupMembers: null,
     groupMemberError: null,
-    removeError: null
+    removeError: null,
+    groupComingContests: null,
+    groupRunningContests: null,
+    groupPastContests: null,
+    groupContestsError: null,
 };
 
 export const groupsReducer = (state = initialState, action) => {
@@ -100,6 +112,35 @@ export const groupsReducer = (state = initialState, action) => {
             return {...state, groupMembers: action.payload, groupMemberError: null, addError: null, addUserError: null, error: null};
         case REMOVE_USER_FROM_GROUP_FAILED:
             return {...state, removeError: action.payload};
+        case FETCH_GROUP_COMING_CONTESTS:
+            return {...state, groupComingContests: action.payload};
+        case FETCH_GROUP_COMING_CONTESTS_FAILED:
+            return {...state, groupContestsError: action.payload};
+        case FETCH_GROUP_RUNNING_CONTESTS:
+            return {...state, groupRunningContests: action.payload};
+        case FETCH_GROUP_RUNNING_CONTESTS_FAILED:
+            return {...state, groupContestsError: action.payload};
+        case FETCH_GROUP_PAST_CONTESTS:
+            return {...state, groupPastContests: action.payload};
+        case FETCH_GROUP_PAST_CONTESTS_FAILED:
+            return {...state, groupContestsError: action.payload};
+        case DELETE_CONTEST:
+            let new_coming = null, new_running = null, new_past = null;  
+            if (state.groupComingContests) {
+                new_coming = state.groupComingContests.filter(contest => contest._id !== action.payload._id);
+            }
+            if (state.groupRunningContests) {
+                new_running = state.groupRunningContests.filter(contest => contest._id !== action.payload._id);
+            }
+            if (state.groupPastContests) {
+                new_past = state.groupPastContests.filter(contest => contest._id !== action.payload._id);
+            }
+            return {
+                ...state,
+                groupComingContests: new_coming,
+                groupRunningContests: new_running,
+                groupPastContests: new_past
+            };
         default:
             return state;
     }

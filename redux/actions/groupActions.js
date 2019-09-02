@@ -15,7 +15,15 @@ import {
     ADD_USER_TO_GROUP,
     REMOVE_USER_FROM_GROUP,
     REMOVE_USER_FROM_GROUP_FAILED,
-    ADD_USER_TO_GROUP_FAILED
+    ADD_USER_TO_GROUP_FAILED,
+    FETCH_GROUP_COMING_CONTESTS,
+    FETCH_GROUP_COMING_CONTESTS_FAILED,
+    FETCH_GROUP_PAST_CONTESTS,
+    FETCH_GROUP_PAST_CONTESTS_FAILED,
+    FETCH_GROUP_RUNNING_CONTESTS,
+    FETCH_GROUP_RUNNING_CONTESTS_FAILED,
+    DELETE_CONTEST,
+    DELETE_CONTEST_FAILED
 } from '../ActionTypes';
 import axios from 'axios';
 import { API } from '../../config';
@@ -523,6 +531,205 @@ export const deleteUser = (id, userID, token) => dispatch => {
                 }
                 else {
                     dispatch(removeUserFromGroupFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+/**
+ * Save coming contests of the group to the redux store
+ * @param {*} contests 
+ */
+export const saveGroupComingContest = contests => {
+    return {
+        type: FETCH_GROUP_COMING_CONTESTS,
+        payload: contests
+    };
+}
+
+/**
+ * Failed to save coming contests
+ * @param {*} err 
+ */
+export const saveGroupComingContestFailed = err => {
+    return {
+        type: FETCH_GROUP_COMING_CONTESTS_FAILED,
+        payload: err
+    };
+}
+
+/**
+ * Fetch group coming contests from the database
+ * @param {*} id 
+ */
+export const fetchGroupComingContests = (id, token) => dispatch => {
+    return axios.get(`${API}/groups/${id}/comingcontests`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(result => dispatch(saveGroupComingContest(result.data)))
+            .catch(err => {
+                if (err.response) {
+                    dispatch(saveGroupComingContestFailed(err.response.data));
+                }
+                else if (err.request) {
+                    dispatch(saveGroupComingContestFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(saveGroupComingContestFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+/**
+ * Save running contests of the group to the redux store
+ * @param {*} contests 
+ */
+export const saveGroupRunningContest = contests => {
+    return {
+        type: FETCH_GROUP_RUNNING_CONTESTS,
+        payload: contests
+    };
+}
+
+/**
+ * Failed to save running contests
+ * @param {*} err 
+ */
+export const saveGroupRunningContestFailed = err => {
+    return {
+        type: FETCH_GROUP_RUNNING_CONTESTS_FAILED,
+        payload: err
+    };
+}
+
+/**
+ * Fetch group runing contests from the database
+ * @param {*} id 
+ */
+export const fetchGroupRunningContests = (id, token) => dispatch => {
+    return axios.get(`${API}/groups/${id}/runningcontests`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(result => dispatch(saveGroupRunningContest(result.data)))
+            .catch(err => {
+                if (err.response) {
+                    dispatch(saveGroupRunningContestFailed(err.response.data));
+                }
+                else if (err.request) {
+                    dispatch(saveGroupRunningContestFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(saveGroupRunningContestFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+/**
+ * Save past contests of the group to the redux store
+ * @param {*} contests 
+ */
+export const saveGroupPastContest = contests => {
+    return {
+        type: FETCH_GROUP_PAST_CONTESTS,
+        payload: contests
+    };
+}
+
+/**
+ * Failed to save past contests
+ * @param {*} err 
+ */
+export const saveGroupPastContestFailed = err => {
+    return {
+        type: FETCH_GROUP_PAST_CONTESTS_FAILED,
+        payload: err
+    };
+}
+
+/**
+ * Fetch group past contests from the database
+ * @param {*} id 
+ */
+export const fetchGroupPastContests = (id, token) => dispatch => {
+    return axios.get(`${API}/groups/${id}/pastcontests`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(result => dispatch(saveGroupPastContest(result.data)))
+            .catch(err => {
+                if (err.response) {
+                    dispatch(saveGroupPastContestFailed(err.response.data));
+                }
+                else if (err.request) {
+                    dispatch(saveGroupPastContestFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(saveGroupPastContestFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+/**
+ * Remove this contest from the redux store
+ * @param {*} contest 
+ */
+export const removeContest = contest => {
+    return {
+        type: DELETE_CONTEST,
+        payload: contest
+    };
+}
+
+/**
+ * Failed to remove this contest from the redux store
+ * @param {*} err 
+ */
+export const removeContestFailed = err => {
+    return {
+        type: DELETE_CONTEST_FAILED,
+        payload: err
+    };
+}
+
+/**
+ * Delete contest from the database
+ * @param {*} id 
+ * @param {*} token 
+ */
+export const deleContest = (id, token) => dispatch => {
+    return axios.delete(`${API}/contests/${id}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(result => {
+                dispatch(removeContest(result.data))
+            })
+            .catch(err => {
+                if (err.response) {
+                    alert(err.response.data);
+                }
+                else if (err.request) {
+                    alert(API_ERRORS.INTERNAL_SERVER_ERROR.message);
+                }
+                else {
+                    alert(API_ERRORS.GENERAL_ERROR.message);
                 }
             });
 }

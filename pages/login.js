@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import { login } from '../redux/actions/authActions';
@@ -22,11 +23,21 @@ class Login extends Component {
                 email: false,
                 password: false
             },
-            visible: true
+            visible: true,
+            submit: false
         };
+        this.redirect = props.router.query.redirect;
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
+    }
+
+    static getInitialProps(ctx) {
+        // this.redirectUrl = (ctx.req && ctx.req.query && ctx.req.query['redirect']) ? decodeURIComponent(ctx.req.query['redirect']) : '/';
+    }
+
+    componentDidMount() {
+        
     }
 
     validate(email) {
@@ -63,13 +74,13 @@ class Login extends Component {
         });
     }
 
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault();
         const user = {
             email: this.state.email,
             password: this.state.password
         }
-        this.props.login(user);
+        this.props.login(user, (this.redirect || "/"));
     }
 
     render() {
@@ -135,12 +146,12 @@ class Login extends Component {
                             <div className="col-12 forgot">
                                 <span style={{color: "white"}}>Don't have an account?</span> <Link prefetch href="/register" ><a href="register">Register</a></Link>
                             </div>
-                            <div className="col-12">
+                            {/* <div className="col-12">
                                 <p style={{color: "white"}}>Or</p>
                                 <FacebookLoginButton />
                                 <GithubLoginButton />
                                 <LinkedInLoginButton />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -207,7 +218,7 @@ class Login extends Component {
     }
 }
 
-export default connect(
+export default withRouter(connect(
     state => ({user: state.authentication}),
     { login }
-)(Login);
+)(Login));

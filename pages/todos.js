@@ -42,10 +42,12 @@ class Todos extends Component {
             );
         }
         else if (this.props.todos.todos) {
-            const title = this.props.auth.user.username + " Todos List" + " | Practice Coding OJ";
-            const description = `Todos list of ${this.props.auth.user.username} on Practice Coding OJ`;
+            let title = "Todos List" + " | Practice Coding OJ";
+            if (this.props.auth.user) {
+                title = this.props.auth.user.username + " " + title;
+            }
             return (
-                <Layout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title} description={description}>
+                <Layout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title} >
                     <div className="todos container">
                         <div className="row justify-content-center">
                             <TodoList todos={this.props.todos.todos} remove={this.remove} />

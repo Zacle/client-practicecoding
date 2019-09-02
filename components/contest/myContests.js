@@ -189,7 +189,7 @@ const Contests = ({user, contests, status, remove}) => {
  * Display contests given the status (coming, running or past)
  * @param {status, contests} param0 
  */
-const MyContests = ({username, user, contests = [], status, remove}) => {
+const MyContests = ({user, contests = [], status, remove}) => {
     if (contests.length === 0) {
         return (
             <>
@@ -199,22 +199,9 @@ const MyContests = ({username, user, contests = [], status, remove}) => {
             </>
         );
     }
-    if (user && (user.username === username)) {
-        return (
-            <Contests user={user} contests={contests} status={status} remove={remove} />
-        );
-    }
-    else {
-        const publicContests = contests.filter(contest => contest.access !== 0);
-        if (publicContests.length === 0) {
-            return (
-                <></>
-            );
-        }
-        return (
-            <Contests user={user} contests={publicContests} status={status} remove={remove} />
-        );
-    }
+    return (
+        <Contests user={user} contests={contests} status={status} remove={remove} />
+    );
 }
 
 export default MyContests;

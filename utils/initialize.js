@@ -10,7 +10,7 @@ const init = (ctx, isSecured = false) => {
             ctx.store.dispatch(reauthenticate(getCookie('auth', ctx.req)));
         }
         else if (isSecured) {
-            ctx.res.writeHead(302, { Location: '/login' });
+            ctx.res.writeHead(302, { Location: `/login?redirect=${ctx.req.url}`});
             ctx.res.end();
             return;
         }
@@ -22,7 +22,7 @@ const init = (ctx, isSecured = false) => {
         const token = ctx.store.getState().authentication.token;
 
         if (!token && isSecured) {
-            Router.push('/login')
+            Router.push(`/login?redirect=${ctx.pathname}`);
         }
 
         if (token && (ctx.pathname === '/login' || ctx.pathname === '/register')) {

@@ -10,8 +10,9 @@ const Editor = (props) => {
         require('brace/theme/' + theme);
   
       return <AceEditor
-                        value="#type your code here"
+                        value={props.source}
                         editorProps={{$blockScrolling: Infinity}}
+                        onChange={props.onChange}
                         onLoad={(editor) => {
                             editor.focus();
                             editor.getSession().setUseWrapMode(true);

@@ -28,7 +28,10 @@ import {
     FETCH_CONTEST_STANDING_FAILED,
     DELETE_PROBLEM,
     DELETE_CONTEST_USER,
-    DELETE_CONTEST_TEAM
+    DELETE_CONTEST_TEAM,
+    IS_LOADING,
+    CREATE_GROUP_CONTEST,
+    CREATE_GROUP_CONTEST_FAILED
 } from '../ActionTypes';
 
 let initialState = {
@@ -54,7 +57,10 @@ let initialState = {
     registrants: null,
     registrantsError: null,
     standing: null,
-    standingError: null
+    standingError: null,
+    isLoading: null,
+    groupContest: null,
+    groupContestError: null
 };
 
 export const contestsReducer = (state = initialState, action) => {
@@ -63,6 +69,10 @@ export const contestsReducer = (state = initialState, action) => {
             return {...state, contest: action.payload};
         case ADD_CONTEST_FAILED:
             return {...state, addContestError: action.payload};
+        case CREATE_GROUP_CONTEST:
+            return {...state, groupContest: action.payload};
+        case CREATE_GROUP_CONTEST_FAILED:
+            return {...state, groupContestError: action.payload};
         case FETCH_COMING_CONTESTS:
             return {...state, comingContests: action.payload, comingError: null};
         case FETCH_COMING_CONTESTS_FAILED:
@@ -130,10 +140,11 @@ export const contestsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 standing: result,
-                standingError: null
+                standingError: null,
+                isLoading: null
             };
         case FETCH_CONTEST_STANDING_FAILED:
-            return {...state, standingError: action.payload};
+            return {...state, standingError: action.payload, isLoading: null};
         case DELETE_PROBLEM:
             const problems = state.problems;
             problems.problems = problems.problems.filter(problem => problem._id !== action.payload);
@@ -165,6 +176,8 @@ export const contestsReducer = (state = initialState, action) => {
                 ...state,
                 registrants: registrant
             };
+        case IS_LOADING:
+            return {...state, isLoading: true};
         default:
             return state;
     }

@@ -4,7 +4,9 @@ import {AUTHENTICATE,
     FORGOT_PASSWORD_FAILED,
     FORGOT_PASSWORD,
     RESET_PASSWORD,
-    RESET_PASSWORD_FAILED
+    RESET_PASSWORD_FAILED,
+    REGISTER,
+    REGISTER_FAILED
 } from '../ActionTypes';
 import axios from 'axios';
 import { API } from '../../config';
@@ -44,7 +46,7 @@ export const deauthenticateUser = () => {
  * Get the token from the API and stores it in the store and cookie
  * @param {*} user user info to authenticate
  */
-export const login = user => dispatch => {
+export const login = (user, url) => dispatch => {
     return axios.post(`${API}/users/login`,
             user,
             {
@@ -64,7 +66,7 @@ export const login = user => dispatch => {
                     }
                 };
                 setCookie("auth", auth);
-                Router.push("/");
+                Router.push(url);
                 dispatch(authenticateUser(response.data));
             })
             .catch((err) => {
@@ -116,6 +118,28 @@ export const deauthenticate = () => {
 }
 
 /**
+ * Register a user and send activation link
+ * @param {*} message 
+ */
+export const registerUser = message => {
+    return {
+        type: REGISTER,
+        payload: message
+    };
+}
+
+/**
+ * Failed to register a new user
+ * @param {*} err 
+ */
+export const registerUserFailed = err => {
+    return {
+        type: REGISTER_FAILED,
+        payload: err
+    };
+}
+
+/**
  * Register the user and display login page
  * @param {*} user 
  */
@@ -128,25 +152,23 @@ export const register = user => dispatch => {
                     'Content-Type': 'application/json'
                 }
             })
-            .then((response) => {
-                Router.push("/login");
-            })
+            .then((response) => dispatch(registerUser(response.data)))
             .catch((err) => {
                 if (err.response) {
                     switch (err.response.status) {
                         case HTTPStatusCodes.REQUEST_TIMEOUT:
-                            return dispatch(authenticationFailed(API_ERRORS.REQUEST_TIMEOUT.message));
+                            return dispatch(registerUserFailed(API_ERRORS.REQUEST_TIMEOUT.message));
                         case HTTPStatusCodes.INTERNAL_SERVER_ERROR:
-                            return dispatch(authenticationFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                            return dispatch(registerUserFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
                         default:
-                            return dispatch(authenticationFailed(err.response.data));
+                            return dispatch(registerUserFailed(err.response.data));
                     }
                 }
                 else if (err.request) {
-                    dispatch(authenticationFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                    dispatch(registerUserFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
                 }
                 else {
-                    dispatch(authenticationFailed(API_ERRORS.GENERAL_ERROR.message));
+                    dispatch(registerUserFailed(API_ERRORS.GENERAL_ERROR.message));
                 }
             });
 }
@@ -232,4 +254,20 @@ export const resetPasswordToken = (password, token) => dispatch => {
                     dispatch(passwordTokenFailed(API_ERRORS.GENERAL_ERROR.message));
                 }
             });
+}
+
+/**
+ * Validate the token from the database
+ * @param {*} token 
+ */
+export const validateToken = token => {
+    return axios.get(`${API}/users/activate/${token}`,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(result => Router.push("/login"))
+            .catch(err => Router.push("/"));
 }

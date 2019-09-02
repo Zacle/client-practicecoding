@@ -29,7 +29,10 @@ import {
     FETCH_CONTEST_STANDING_FAILED,
     DELETE_PROBLEM,
     DELETE_CONTEST_USER,
-    DELETE_CONTEST_TEAM
+    DELETE_CONTEST_TEAM,
+    IS_LOADING,
+    CREATE_GROUP_CONTEST,
+    CREATE_GROUP_CONTEST_FAILED
 } from '../ActionTypes';
 import axios from 'axios';
 import { API } from '../../config';
@@ -83,6 +86,56 @@ export const createContest = (contest, token) => dispatch => {
                 }
                 else {
                     dispatch(saveContestFailed(API_ERRORS.GENERAL_ERROR.message));
+                }
+            });
+}
+
+/**
+ * Add the newly created contest to the redux store
+ * @param {*} contest 
+ */
+export const saveGroupContest = contest => {
+    return {
+        type: CREATE_GROUP_CONTEST,
+        payload: contest
+    };
+}
+
+/**
+ * Failed to add the new contest to the redux store
+ */
+export const saveGroupContestFailed = err => {
+    return {
+        type: CREATE_GROUP_CONTEST_FAILED,
+        payload: err
+    };
+}
+
+/**
+ * Create a new group contest and save to the database
+ * @param {*} contest 
+ * @param {*} token 
+ */
+export const createGroupContest = (contest, id, token) => dispatch => {
+    return axios.post(`${API}/groups/${id}/createcontest`,
+            contest,
+            {
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(result => dispatch(saveGroupContest(result.data)))
+            .catch(err => {
+                if (err.response) {
+                    dispatch(saveGroupContestFailed(err.response.data));
+                }
+                else if (err.request) {
+                    dispatch(saveGroupContestFailed(API_ERRORS.INTERNAL_SERVER_ERROR.message));
+                }
+                else {
+                    dispatch(saveGroupContestFailed(API_ERRORS.GENERAL_ERROR.message));
                 }
             });
 }
@@ -731,11 +784,21 @@ export const fetchStanding = id => dispatch => {
 }
 
 /**
+ * Standing loading
+ */
+export const isLoading = () => {
+    return {
+        type: IS_LOADING
+    };
+}
+
+/**
  * Update contest standing from the database
  * @param {*} id 
  * @param {*} page 
  */
 export const updateStanding = id => dispatch => {
+    dispatch(isLoading());
     return axios.get(`${API}/contests/${id}/update`,
             {
                 headers: {

@@ -39,6 +39,7 @@ class Profile extends Component {
             );
         }
         else if (this.props.user.user) {
+            let date = new Date(this.props.user.user.joined);
             const title = this.username + " | Practice Coding OJ";
             const description = `Profile of ${this.username} on Practice Coding OJ`;
             return (
@@ -64,7 +65,7 @@ class Profile extends Component {
                                 </div>
                                 <div className="row">
                                     <div className="col-4 col-md-4">Joined on: </div>
-                                    <div className="col-8 col-md-6">{this.props.user.user.joined}</div>
+                                    <div className="col-8 col-md-6">{date.toLocaleString('en-GB')}</div>
                                 </div>
                             </div>
                         </div>
