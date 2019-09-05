@@ -58,13 +58,13 @@ export default class extends Component {
                     </a>
                   </Link>
                 </li>
-                <li className="nav-item">
+                {/* <li className="nav-item">
                   <Link prefetch href="/">
                     <a className="nav-link" href="/">
                       Messages
                     </a>
                   </Link>
-                </li>
+                </li> */}
                 <LoginNav deauthenticate={this.props.deauthenticate} isLoggedIn={this.props.isLoggedIn} user={this.props.user} />
               </ul>
             </div>

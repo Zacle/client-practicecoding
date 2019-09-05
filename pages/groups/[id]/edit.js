@@ -55,13 +55,16 @@ class EditGroup extends Component {
 
     async componentDidMount() {
         await this.props.fetchGroup(this.id, this.props.auth.user.username, this.props.auth.token);
-        if (this.props.groups.inGroup.admin.username !== this.props.auth.user.username) {
-            Router.push(`/groups/${id}`);
+        if (this.props.groups.inGroup) {
+            if (this.props.groups.inGroup.admin.username !== this.props.auth.user.username) {
+                Router.push(`/groups/${id}`);
+            }
+            await this.setState({
+                description: this.props.groups.inGroup.description,
+                access: (this.props.groups.inGroup.access == 0) ? "PRIVATE" : "PUBLIC"
+            });
         }
-        await this.setState({
-            description: this.props.groups.inGroup.description,
-            access: (this.props.groups.inGroup.access == 0) ? "PRIVATE" : "PUBLIC"
-        });
+        
     }
 
     render () {

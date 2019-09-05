@@ -34,11 +34,13 @@ class Join extends Component {
 
     async componentDidMount() {
         await this.props.fetchJoinGroup(this.id, this.props.auth.token);
-        await this.setState({
-            name: this.props.groups.inGroup.name,
-            description: this.props.groups.inGroup.description,
-            access: this.props.groups.inGroup.access
-        });
+        if (this.props.groups.inGroup) {
+            await this.setState({
+                name: this.props.groups.inGroup.name,
+                description: this.props.groups.inGroup.description,
+                access: this.props.groups.inGroup.access
+            });
+        }
     }
 
     render() {

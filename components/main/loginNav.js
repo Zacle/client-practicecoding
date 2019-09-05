@@ -56,13 +56,13 @@ const Logged = ({username, deauthenticate}) => {
                     </DropdownItem>
                 </DropdownMenu>
             </UncontrolledDropdown>
-            <li className="nav-item">
+            {/* <li className="nav-item">
                 <Link prefetch href="/">
                     <a className="nav-link" href="/">
                         <FontAwesomeIcon icon="bell" size="lg"></FontAwesomeIcon>
                     </a>
                 </Link>
-            </li>
+            </li> */}
             <li className="nav-item">
                 <Link prefetch href="/profile/[username]" as={`/profile/${username}`}>
                     <a className="nav-link" href={`/profile/${username}`}>

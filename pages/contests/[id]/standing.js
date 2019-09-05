@@ -96,13 +96,17 @@ class ContestStanding extends Component {
     async componentDidMount() {
         await this.props.updateStanding(this.id);
 
-        this.time = setInterval(() => this.duration(new Date(), new Date(this.props.contests.standing.standing.contestID.endDate)), 1000);
+        if (this.props.contests.standing) {
+            let date = new Date(this.props.contests.standing.standing.contestID.endDate);
 
-        if (this.props.contests.standing.standing.contestID.type === 1) {
-            this.interval = setInterval(() => this.props.updateStanding(this.id), 180000);
-        }
-        else {
-            this.interval = setInterval(() => this.props.updateStanding(this.id), 300000);
+            this.time = setInterval(() => this.duration(new Date(), new Date(this.props.contests.standing.standing.contestID.endDate)), 1000);
+
+            if (this.props.contests.standing.standing.contestID.type === 1 && date.getTime() > Date.now() ) {
+                this.interval = setInterval(() => this.props.updateStanding(this.id), 180000);
+            }
+            else if(date.getTime() > Date.now()) {
+                this.interval = setInterval(() => this.props.updateStanding(this.id), 300000);
+            }
         }
     }
 

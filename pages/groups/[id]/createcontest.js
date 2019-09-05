@@ -99,8 +99,8 @@ class CreateContest extends Component {
 
     async componentDidMount() {
         await this.props.fetchGroup(this.id, this.props.auth.user.username, this.props.auth.token);
-        if (this.props.groups.inGroup.admin.username !== this.props.auth.user.username) {
-            Router.push(`/groups/${id}`);
+        if (this.props.groups.inGroup && (this.props.groups.inGroup.admin.username !== this.props.auth.user.username)) {
+            Router.replace(`/groups/${id}`);
         }
     }
 

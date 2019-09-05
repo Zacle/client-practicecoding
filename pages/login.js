@@ -81,6 +81,9 @@ class Login extends Component {
             password: this.state.password
         }
         this.props.login(user, (this.redirect || "/"));
+        this.setState({
+            submit: true
+        });
     }
 
     render() {
@@ -96,7 +99,7 @@ class Login extends Component {
                                 <img src="../static/images/face.png" />
                             </div>
                             <div className="col-12 form-input">
-                                    {this.props.user.errMsg &&
+                                    {this.props.user.errMsg && this.state.submit &&
                                     (
                                         <Alert color="danger">
                                             {this.props.user.errMsg}
