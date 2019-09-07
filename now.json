@@ -1,7 +1,7 @@
 {
     "name": "practicecoding",
     "version": 2,
-    "alias": ["practicecoding.com"],
+    "alias": ["practicecoding", "practicecoding.com"],
     "github": {
         "autoAlias": false
     }
