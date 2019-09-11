@@ -287,7 +287,7 @@ export const fetchJoinGroup = (id, token) => dispatch => {
 export const updateGroup = group => {
     return {
         type: UPDATE_GROUP,
-        payload: UPDATE_GROUP_FAILED
+        payload: group
     };
 }
 
@@ -318,7 +318,7 @@ export const updateInfo = (query, id, token) => dispatch => {
                     'Authorization': 'Bearer ' + token
                 }
             })
-            .then(result => dispatch(updateGroup(result)))
+            .then(result => dispatch(updateGroup(result.data)))
             .catch(err => dispatch(updateGroupFailed("Failed to update group info. Try again later!")));
 }
 

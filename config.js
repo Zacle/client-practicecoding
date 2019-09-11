@@ -1,3 +1,3 @@
 module.exports = {
-    API: 'https://practicecoding-backend.zacle.now.sh',
+    API: 'http://localhost:3001',
   };
