@@ -36,7 +36,7 @@ export default class extends Component {
         <nav className="navbar navbar-expand-md fixed-top navbar-custom">
             <Link prefetch href="/">
               <a className="navbar-brand mr-auto mt-2 mt-lg-0" href="/">
-                Brand Goes Here
+                <img alt="Logo" width="200px" height="30px" src="../static/images/google.png" />
               </a>
             </Link>
             <button className="navbar-dark navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
