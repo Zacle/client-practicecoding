@@ -1,3 +1,3 @@
 module.exports = {
-    API: 'http://api.practicecodes.com',
+    API: 'http://http://139.59.92.209:3001',
   };
