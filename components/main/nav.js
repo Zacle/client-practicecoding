@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import LoginNav from "./loginNav";
+import google from "./google.png";
 
 
 export default class extends Component {
@@ -36,7 +37,7 @@ export default class extends Component {
         <nav className="navbar navbar-expand-md fixed-top navbar-custom">
             <Link prefetch href="/">
               <a className="navbar-brand mr-auto mt-2 mt-lg-0" href="/">
-                <img alt="Logo" width="200px" height="30px" src="../static/images/google.png" />
+                <img alt="Logo" width="200px" height="30px" src={google} />
               </a>
             </Link>
             <button className="navbar-dark navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">

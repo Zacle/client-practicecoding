@@ -37,7 +37,7 @@ class MyCodes extends Component {
                 <Layout auth={this.props.auth} deauthenticate={this.props.deauthenticate} title={title}>
                     <div className="info container">
                         <div className="error row justify-content-center">
-                            <p className="error">{this.props.contests.codesError}</p>
+                            <p className="error">{this.props.source.codesError || "An errror occurred. Please Try agin later!"}</p>
                         </div>
                     </div>
                 </Layout>
