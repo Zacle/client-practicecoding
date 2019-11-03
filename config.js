@@ -1,5 +1,5 @@
 module.exports = {
 
-    API: 'https://139.59.92.209:3443'
+    API: 'https://apipracticecoding.herokuapp.com'
 
   };
