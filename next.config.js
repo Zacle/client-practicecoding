@@ -1,9 +1,6 @@
-const { PHASE_PRODUCTION_SERVER } =
-      process.env.NODE_ENV === 'development'
-      ? {}
-      : !process.env.NOW_REGION
-      ? require('next/constants')
-      : require('next-server/constants');
+const {
+  PHASE_DEVELOPMENT_SERVER, PHASE_PRODUCTION_BUILD
+} = require('next/constants')
 
 // Fixes npm packages that depend on `fs` module
 const nextConfig = { webpack: config => ({ ...config, node: { fs: 'empty' } }) }
