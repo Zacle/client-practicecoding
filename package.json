@@ -13,6 +13,9 @@
     "start": "next start -p $PORT",
     "heroku-postbuild": "yarn build"
   },
+  "engines": {
+    "node": "8.14.0"
+  },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-brands-svg-icons": "^5.9.0",
